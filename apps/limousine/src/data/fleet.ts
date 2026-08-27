@@ -5,8 +5,10 @@ export interface GroundVehicle {
   passengers: number;
   luggage: number;
   image: string;
-  hourlyRateUSD: number;
-  transferRateKEF_USD: number;
+  /** Hourly chauffeur hire — from rate */
+  hourlyRateEUR: number;
+  /** KEF ↔ Reykjavík private transfer — from rate */
+  transferRateKEF_EUR: number;
   features: string[];
   specs: {
     drivetrain: string;
@@ -18,6 +20,23 @@ export interface GroundVehicle {
   description: string;
 }
 
+export type OfferCurrency = 'EUR' | 'ISK';
+
+export interface IcelandTour {
+  id: string;
+  title: string;
+  subtitle?: string;
+  durationHours: number;
+  basePrice: number;
+  currency: OfferCurrency;
+  maxPassengers: number;
+  image: string;
+  description: string;
+  highlights: string[];
+  /** Seasonal or operational note shown on cards / booking */
+  note?: string;
+}
+
 /** Current operational luxury fleet — two vehicles only */
 export const GROUND_FLEET: GroundVehicle[] = [
   {
@@ -27,8 +46,8 @@ export const GROUND_FLEET: GroundVehicle[] = [
     passengers: 6,
     luggage: 5,
     image: '/fleet/volvo-xc90.jpg',
-    hourlyRateUSD: 185,
-    transferRateKEF_USD: 380,
+    hourlyRateEUR: 170,
+    transferRateKEF_EUR: 200,
     tag: 'Flagship Chauffeur',
     description:
       'Refined Scandinavian luxury for VIP transfers and private touring. Spacious seven-seat architecture configured for up to six passengers with premium comfort and all-weather confidence.',
@@ -53,8 +72,8 @@ export const GROUND_FLEET: GroundVehicle[] = [
     passengers: 4,
     luggage: 4,
     image: '/fleet/land-cruiser-150-vx.jpg',
-    hourlyRateUSD: 210,
-    transferRateKEF_USD: 420,
+    hourlyRateEUR: 190,
+    transferRateKEF_EUR: 200,
     tag: 'Iceland All-Terrain',
     description:
       'The trusted VX specification for Iceland’s demanding roads — lava fields, highland approaches, and winter conditions — with executive comfort for up to four passengers.',
@@ -74,65 +93,125 @@ export const GROUND_FLEET: GroundVehicle[] = [
   },
 ];
 
-export const ICELAND_TOURS = [
+/** Client offerings — day tours, aurora, and wedding chauffeur */
+export const ICELAND_TOURS: IcelandTour[] = [
   {
-    id: 'golden-circle-luxury',
-    title: 'The Golden Circle Private Signature',
-    durationHours: 8,
-    basePriceUSD: 1150,
-    distanceKm: 280,
-    image: 'https://images.unsplash.com/photo-1504893524553-b855bce32c67?auto=format&fit=crop&w=1200&q=80',
+    id: 'jokulsarlon-diamond-beach',
+    title: 'Jökulsárlón & Diamond Beach',
+    subtitle: 'Glacier lagoon',
+    durationHours: 10,
+    basePrice: 2100,
+    currency: 'EUR',
+    maxPassengers: 6,
+    image: 'https://images.unsplash.com/photo-1476610182048-b716b8518fcf?auto=format&fit=crop&w=1200&q=80',
     description:
-      'Þingvellir, Geysir and Gullfoss as a private VIP circuit — tailored timings, no coach crowds, expert local chauffeur.',
+      'We will visit the lagoon Jökulsárlón where a glacier calves into the lake. It is possible to sail around the glaciers and taste 1000-year-old Icelandic water. A few metres away is the famous Diamond Beach.',
     highlights: [
-      'UNESCO Þingvellir National Park',
-      'Strokkur geothermal geyser',
-      'Private viewing at Gullfoss',
+      'Jökulsárlón glacier lagoon',
+      'Optional lagoon boat sailing',
+      'Diamond Beach',
     ],
   },
   {
-    id: 'south-coast',
-    title: 'South Coast Waterfalls & Black Sand',
-    durationHours: 10,
-    basePriceUSD: 1450,
-    distanceKm: 380,
+    id: 'vik-reynisdrangar',
+    title: 'Vík Reynisdrangar',
+    subtitle: 'South Coast Adventure',
+    durationHours: 9,
+    basePrice: 1800,
+    currency: 'EUR',
+    maxPassengers: 6,
     image: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=80',
     description:
-      'Seljalandsfoss, Skógafoss and Reynisfjara in absolute private comfort along Iceland’s dramatic southern shoreline.',
+      'Seljalandsfoss, Skógafoss, Sólheimajökull, Vík, Black Beach, and Dyrhólaey when open. Come with us for a tour through the amazing landscape of the South Coast of Iceland.',
     highlights: [
-      'Walk behind Seljalandsfoss',
-      'Skógafoss cascade',
-      'Reynisfjara black sand beach',
+      'Seljalandsfoss & Skógafoss',
+      'Sólheimajökull',
+      'Vík · Black Beach · Dyrhólaey',
     ],
   },
   {
-    id: 'blue-lagoon',
-    title: 'Reykjanes & Blue Lagoon VIP',
-    durationHours: 6,
-    basePriceUSD: 850,
-    distanceKm: 140,
-    image: 'https://images.unsplash.com/photo-1518457607834-6e8d80c183c5?auto=format&fit=crop&w=1200&q=80',
+    id: 'golden-circle',
+    title: 'Gullfoss, Geysir & Þingvellir',
+    subtitle: 'Classic Golden Circle',
+    durationHours: 7,
+    basePrice: 1500,
+    currency: 'EUR',
+    maxPassengers: 6,
+    image: 'https://images.unsplash.com/photo-1504893524553-b855bce32c67?auto=format&fit=crop&w=1200&q=80',
     description:
-      'Geothermal peninsula touring with door-to-door escort to Blue Lagoon — ideal after private jet or international arrival.',
+      'In Þingvellir you will enjoy beautiful landscape while listening to the great history of the place. From there we go to the boiling Geysir and the powerful waterfall Gullfoss.',
     highlights: [
-      'Reykjanes geothermal vistas',
-      'Bridge Between Continents',
-      'VIP Blue Lagoon coordination',
+      'Þingvellir National Park',
+      'Geysir geothermal area',
+      'Gullfoss waterfall',
+    ],
+  },
+  {
+    id: 'vestmannaeyjar',
+    title: 'Vestmannaeyjar',
+    subtitle: 'Westman Islands',
+    durationHours: 8,
+    basePrice: 2000,
+    currency: 'EUR',
+    maxPassengers: 6,
+    image: 'https://images.unsplash.com/photo-1531168556467-80aace0d8144?auto=format&fit=crop&w=1200&q=80',
+    description:
+      'Westman Islands are islands off the South Coast of Iceland. On one of them is a little and beautiful town of 4–5 thousand inhabitants. Incredible nature and big history touch everyone who goes there. We will sail out by ferry.',
+    highlights: [
+      'Ferry to the Westman Islands',
+      'Island town & nature',
+      'Rich local history',
     ],
   },
   {
     id: 'northern-lights',
-    title: 'Private Aurora Borealis Hunt',
-    durationHours: 5,
-    basePriceUSD: 950,
-    distanceKm: 180,
+    title: 'Private Northern Lights Tour',
+    subtitle: 'Aurora hunt',
+    durationHours: 4,
+    basePrice: 1000,
+    currency: 'EUR',
+    maxPassengers: 6,
     image: 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?auto=format&fit=crop&w=1200&q=80',
     description:
-      'Real-time cloud and solar tracking with your private chauffeur — dark-sky glens, warm amenities, discretionary pacing.',
+      'To see the Northern Lights dancing in the sky is a wonder. Because of the bright nights during summer it is not possible to see the Northern Lights from the beginning of May to around 20 August.',
     highlights: [
-      'Live aurora forecasting',
-      'Hot cocoa & wool blankets',
-      'Remote dark-sky locations',
+      'Private aurora chase',
+      'Dark-sky locations',
+      'Seasonal availability',
+    ],
+    note: 'Not available early May – ~20 August (bright nights).',
+  },
+  {
+    id: 'wedding-chauffeur',
+    title: 'Wedding Chauffeur',
+    subtitle: 'Brúðkaups akstur',
+    durationHours: 4,
+    basePrice: 59900,
+    currency: 'ISK',
+    maxPassengers: 6,
+    image: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80',
+    description:
+      'The wedding day is one of the biggest events in our lives. Why not have a chauffeur in a decorated car to make the experience greater? Brúðkaupsdagurinn er einn stærsti viðburður lífsins — því ekki að hafa einkabílstjóra á skreyttum bíl?',
+    highlights: [
+      'Decorated chauffeur car',
+      'Wedding-day timing',
+      'From 59.900 ISK',
     ],
   },
 ];
+
+export function formatMoney(amount: number, currency: OfferCurrency = 'EUR') {
+  if (currency === 'ISK') {
+    return `${amount.toLocaleString('is-IS')} ISK`;
+  }
+  return `€${amount.toLocaleString('en-US')}`;
+}
+
+/** Airport transfer copy — from €200, up to 4 passengers */
+export const AIRPORT_TRANSFER = {
+  title: 'Airport Transfer',
+  blurb: 'To/from the airport with comfort and style — private chauffeur.',
+  fromEUR: 200,
+  maxPassengers: 4,
+  route: 'KEF ↔ Reykjavík',
+};

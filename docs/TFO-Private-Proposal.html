@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TFO Private — Project Proposal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --basalt: #080B0E;
+      --panel: #0C1017;
+      --champagne: #C5A880;
+      --champagne-soft: #d6ba94;
+      --ink: #F3F4F6;
+      --muted: #94A3B8;
+      --line: rgba(255, 255, 255, 0.12);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    html, body {
+      background: var(--basalt);
+      color: var(--ink);
+      font-family: "Plus Jakarta Sans", sans-serif;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      padding: 18mm 18mm 16mm;
+      position: relative;
+      overflow: hidden;
+      page-break-after: always;
+    }
+
+    .page:last-child { page-break-after: auto; }
+
+    .glow {
+      position: absolute;
+      pointer-events: none;
+      border-radius: 50%;
+      filter: blur(2px);
+    }
+
+    .glow-top {
+      top: -80px;
+      right: -40px;
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(197,168,128,0.18) 0%, transparent 70%);
+    }
+
+    .glow-bottom {
+      bottom: -100px;
+      left: -60px;
+      width: 360px;
+      height: 360px;
+      background: radial-gradient(circle, rgba(197,168,128,0.1) 0%, transparent 70%);
+    }
+
+    .eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--champagne);
+      font-weight: 600;
+    }
+
+    h1 {
+      font-family: "Cormorant Garamond", serif;
+      font-weight: 500;
+      font-size: 42px;
+      line-height: 1.08;
+      letter-spacing: -0.01em;
+      margin-top: 14px;
+      color: #fff;
+    }
+
+    h1 em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--champagne);
+    }
+
+    h2 {
+      font-family: "Cormorant Garamond", serif;
+      font-weight: 500;
+      font-size: 26px;
+      color: #fff;
+      margin-bottom: 14px;
+    }
+
+    p, li {
+      font-size: 12.5px;
+      line-height: 1.65;
+      color: var(--muted);
+      font-weight: 300;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 18px;
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand-mark {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .brand-mark .tfo {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 28px;
+      letter-spacing: 0.18em;
+      font-weight: 600;
+      color: #fff;
+      line-height: 1;
+    }
+
+    .brand-mark .sub {
+      font-size: 9px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--champagne);
+    }
+
+    .meta {
+      text-align: right;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .meta strong {
+      color: var(--champagne);
+      font-weight: 500;
+    }
+
+    .hero {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 28px;
+    }
+
+    .hero p {
+      max-width: 480px;
+      margin-top: 14px;
+      font-size: 13.5px;
+    }
+
+    .sites {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 28px 0 32px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .site-card {
+      border: 1px solid var(--line);
+      background: rgba(12, 16, 23, 0.85);
+      padding: 18px 16px;
+      min-height: 118px;
+    }
+
+    .site-card .num {
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--champagne);
+      margin-bottom: 10px;
+    }
+
+    .site-card h3 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 20px;
+      color: #fff;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .site-card p {
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .price-block {
+      position: relative;
+      z-index: 1;
+      border: 1px solid rgba(197,168,128,0.35);
+      background: linear-gradient(135deg, rgba(197,168,128,0.1), rgba(12,16,23,0.9));
+      padding: 22px 24px;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 20px;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
+    .price-block .label {
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--champagne);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .price-block .amount {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 40px;
+      color: #fff;
+      line-height: 1;
+      font-weight: 500;
+    }
+
+    .price-block .php {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .compare {
+      border-left: 1px solid var(--line);
+      padding-left: 20px;
+    }
+
+    .compare .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 11.5px;
+      padding: 6px 0;
+      color: var(--muted);
+    }
+
+    .compare .row span:last-child {
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .compare .save {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+      font-size: 11.5px;
+      color: var(--champagne-soft);
+      letter-spacing: 0.02em;
+    }
+
+    .section {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 22px;
+    }
+
+    .scope-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .scope-list li {
+      border: 1px solid var(--line);
+      background: rgba(12, 16, 23, 0.6);
+      padding: 16px 18px;
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .scope-list .idx {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 22px;
+      color: var(--champagne);
+      line-height: 1;
+      padding-top: 2px;
+    }
+
+    .scope-list strong {
+      display: block;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 4px;
+      letter-spacing: 0.02em;
+    }
+
+    .scope-list p {
+      font-size: 11.5px;
+      line-height: 1.55;
+    }
+
+    .footer-note {
+      position: absolute;
+      left: 18mm;
+      right: 18mm;
+      bottom: 14mm;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+      font-size: 9.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #64748B;
+      z-index: 1;
+    }
+
+    .pillars {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .pillar {
+      border: 1px solid var(--line);
+      padding: 16px;
+      background: rgba(12,16,23,0.55);
+    }
+
+    .pillar h4 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 18px;
+      color: #fff;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .pillar p { font-size: 11.5px; }
+
+    .next-steps {
+      list-style: none;
+      counter-reset: step;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .next-steps li {
+      counter-increment: step;
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .next-steps li:last-child { border-bottom: none; }
+
+    .next-steps li::before {
+      content: counter(step, decimal-leading-zero);
+      font-family: "Cormorant Garamond", serif;
+      color: var(--champagne);
+      font-size: 16px;
+      line-height: 1.2;
+    }
+
+    .next-steps strong {
+      display: block;
+      color: #fff;
+      font-size: 12.5px;
+      margin-bottom: 2px;
+      font-weight: 500;
+    }
+
+    .closing {
+      margin-top: 28px;
+      padding: 20px 22px;
+      border: 1px solid rgba(197,168,128,0.3);
+      background: rgba(197,168,128,0.06);
+    }
+
+    .closing p {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 20px;
+      line-height: 1.35;
+      color: #fff;
+      font-weight: 400;
+    }
+
+    .closing .sign {
+      margin-top: 14px;
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--champagne);
+    }
+  </style>
+</head>
+<body>
+  <!-- PAGE 1 -->
+  <section class="page">
+    <div class="glow glow-top"></div>
+    <div class="glow glow-bottom"></div>
+
+    <header class="header">
+      <div class="brand-mark">
+        <span class="tfo">TFO</span>
+        <span class="sub">Private Ecosystem</span>
+      </div>
+      <div class="meta">
+        <div><strong>Project Proposal</strong></div>
+        <div>Prepared for client review</div>
+        <div>Monday presentation</div>
+      </div>
+    </header>
+
+    <div class="hero">
+      <div class="eyebrow">From runway to road</div>
+      <h1>Three specialist brands.<br /><em>One seamless standard.</em></h1>
+      <p>
+        A complete digital presence for TFO Private, TFO Jets, and Iceland Limousine —
+        designed as a luxury ecosystem, delivered as one coordinated package.
+      </p>
+    </div>
+
+    <div class="sites">
+      <div class="site-card">
+        <div class="num">Website 01</div>
+        <h3>TFO Private</h3>
+        <p>Parent portal connecting aviation and ground under one concierge standard.</p>
+      </div>
+      <div class="site-card">
+        <div class="num">Website 02</div>
+        <h3>TFO Jets</h3>
+        <p>Aviation house for ferry, delivery, crew dispatch, and worldwide operations.</p>
+      </div>
+      <div class="site-card">
+        <div class="num">Website 03</div>
+        <h3>Iceland Limousine</h3>
+        <p>Luxury chauffeur, transfers, and daytrips with guided booking experience.</p>
+      </div>
+    </div>
+
+    <div class="price-block">
+      <div>
+        <div class="label">Package investment</div>
+        <div class="amount">ISK 1,800,000</div>
+        <div class="php">Reference: ₱900,000</div>
+      </div>
+      <div class="compare">
+        <div class="row">
+          <span>Standard per site</span>
+          <span>ISK 2,400,000</span>
+        </div>
+        <div class="row">
+          <span>Standard (3 sites)</span>
+          <span>ISK 7,200,000</span>
+        </div>
+        <div class="row">
+          <span>This package</span>
+          <span>ISK 1,800,000</span>
+        </div>
+        <div class="save">Friendship package for the full ecosystem (₱1.2M × 3 → ₱900k).</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>What’s included</h2>
+      <ul class="scope-list">
+        <li>
+          <span class="idx">01</span>
+          <div>
+            <strong>Development of 3 websites</strong>
+            <p>
+              Full design and build for TFO Private, TFO Jets, and Iceland Limousine —
+              aligned look and feel, mobile-ready, and ready for public launch.
+            </p>
+          </div>
+        </li>
+        <li>
+          <span class="idx">02</span>
+          <div>
+            <strong>3 months post-deployment support</strong>
+            <p>
+              Includes 5 minor changes and 1 major change at no extra cost.
+              After the support period — or once included changes are used —
+              further updates are charged separately.
+            </p>
+          </div>
+        </li>
+        <li>
+          <span class="idx">03</span>
+          <div>
+            <strong>Domain transition (old → new)</strong>
+            <p>
+              Support moving from the current domain(s) to the new websites.
+              Client provides access and approval at the domain provider so
+              we can complete the switch together.
+            </p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="footer-note">
+      <span>TFO Private · Confidential</span>
+      <span>Page 1 / 2</span>
+    </div>
+  </section>
+
+  <!-- PAGE 2 -->
+  <section class="page">
+    <div class="glow glow-top"></div>
+
+    <header class="header">
+      <div class="brand-mark">
+        <span class="tfo">TFO</span>
+        <span class="sub">Private Ecosystem</span>
+      </div>
+      <div class="meta">
+        <div><strong>Terms &amp; next steps</strong></div>
+        <div>Companion to live demo</div>
+      </div>
+    </header>
+
+    <div class="section">
+      <h2>Support clarity</h2>
+      <div class="pillars">
+        <div class="pillar">
+          <h4>Minor changes</h4>
+          <p>Copy edits, small layout tweaks, link updates, light visual adjustments — 5 included.</p>
+        </div>
+        <div class="pillar">
+          <h4>Major change</h4>
+          <p>One larger update (new section or meaningful feature adjustment) included within the support window.</p>
+        </div>
+        <div class="pillar">
+          <h4>After 3 months</h4>
+          <p>Ongoing work moves to paid change requests or a separate support arrangement.</p>
+        </div>
+        <div class="pillar">
+          <h4>Domain help</h4>
+          <p>We guide the cutover; registrar login / DNS approval comes from your side.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" style="margin-top: 28px;">
+      <h2>Suggested payment schedule</h2>
+      <ul class="scope-list">
+        <li>
+          <span class="idx">40%</span>
+          <div>
+            <strong>On approval / kickoff — ISK 720,000</strong>
+            <p>Project confirmed and work locked for delivery.</p>
+          </div>
+        </li>
+        <li>
+          <span class="idx">40%</span>
+          <div>
+            <strong>On staging sign-off — ISK 720,000</strong>
+            <p>Sites reviewed and accepted before public launch.</p>
+          </div>
+        </li>
+        <li>
+          <span class="idx">20%</span>
+          <div>
+            <strong>On go-live &amp; domain switch — ISK 360,000</strong>
+            <p>Websites live on the chosen domain(s).</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="section" style="margin-top: 28px;">
+      <h2>Next steps</h2>
+      <ol class="next-steps">
+        <li>
+          <div>
+            <strong>Review the live demo</strong>
+            <p>Walk through all three websites and the booking experience.</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>Confirm scope &amp; investment</strong>
+            <p>Agree the package as outlined: ISK 1,800,000 for the full ecosystem.</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>Provide domain access</strong>
+            <p>Share registrar details when ready so the transition can be scheduled.</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>Launch</strong>
+            <p>Go live, then begin the 3-month support window.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="closing">
+      <p>
+        Built as one ecosystem — Private, Jets, and Iceland Limousine —
+        with a friendship package rate for the complete delivery.
+      </p>
+      <div class="sign">Ready for Monday discussion</div>
+    </div>
+
+    <div class="footer-note">
+      <span>TFO Private · Confidential</span>
+      <span>Page 2 / 2</span>
+    </div>
+  </section>
+</body>
+</html>

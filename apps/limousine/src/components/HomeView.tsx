@@ -12,7 +12,7 @@ import {
   PlaneLanding,
   MapPin,
 } from 'lucide-react';
-import { GROUND_FLEET, ICELAND_TOURS } from '../data/fleet';
+import { GROUND_FLEET, ICELAND_TOURS, AIRPORT_TRANSFER, formatMoney } from '../data/fleet';
 import { fadeUp, easeLuxury, staggerContainer, heroReveal } from '../lib/motion';
 
 interface HomeViewProps {
@@ -121,7 +121,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onOpenBooking, onOpenEnquiry
               {
                 icon: MapPin,
                 title: 'Bespoke Day Tours',
-                body: 'Golden Circle, South Coast, Blue Lagoon, aurora hunts — designed around you.',
+                body: 'Golden Circle, South Coast, Jökulsárlón, Westman Islands, aurora — designed around you.',
               },
             ].map((item, i) => (
               <motion.div
@@ -220,7 +220,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onOpenBooking, onOpenEnquiry
                     <div>
                       <span className="text-[10px] text-slate-500 block">KEF transfer · hourly</span>
                       <span className="text-sm font-semibold text-[#0F172A]">
-                        ${vehicle.transferRateKEF_USD} · ${vehicle.hourlyRateUSD}/hr
+                        {formatMoney(vehicle.transferRateKEF_EUR)} · {formatMoney(vehicle.hourlyRateEUR)}/hr
                       </span>
                     </div>
                     <button
@@ -248,12 +248,12 @@ export const HomeView: React.FC<HomeViewProps> = ({ onOpenBooking, onOpenEnquiry
             </h2>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8">
             {ICELAND_TOURS.map((tour, i) => (
               <motion.div
                 key={tour.id}
                 {...fadeUp}
-                transition={{ ...fadeUp.transition, delay: i * 0.08 }}
+                transition={{ ...fadeUp.transition, delay: i * 0.06 }}
                 whileHover={{ y: -6 }}
                 className="group bg-[#0D1219] border border-white/10 overflow-hidden hover:border-[#C5A880]/50 transition-colors flex flex-col"
               >
@@ -263,28 +263,36 @@ export const HomeView: React.FC<HomeViewProps> = ({ onOpenBooking, onOpenEnquiry
                     alt={tour.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
-                  <div className="absolute bottom-3 left-3 right-3 flex justify-between text-xs">
+                  <div className="absolute bottom-3 left-3 right-3 flex justify-between text-xs gap-2">
                     <span className="bg-black/80 text-white px-2.5 py-1 border border-white/10 flex items-center gap-1 font-mono">
                       <Clock className="w-3.5 h-3.5 text-[#C5A880]" />
                       {tour.durationHours}h
                     </span>
                     <span className="bg-black/80 text-[#C5A880] px-2.5 py-1 border border-[#C5A880]/30 font-mono">
-                      ~{tour.distanceKm} km
+                      up to {tour.maxPassengers}
                     </span>
                   </div>
                 </div>
                 <div className="p-5 space-y-3 flex-1 flex flex-col justify-between">
                   <div>
+                    {tour.subtitle && (
+                      <span className="text-[10px] tracking-[0.2em] uppercase text-[#C5A880] block mb-1">
+                        {tour.subtitle}
+                      </span>
+                    )}
                     <h3 className="font-serif-luxury text-lg text-white leading-snug mb-2">{tour.title}</h3>
-                    <p className="text-[11px] text-slate-400 leading-relaxed line-clamp-3">{tour.description}</p>
+                    <p className="text-[11px] text-slate-400 leading-relaxed line-clamp-4">{tour.description}</p>
+                    {tour.note && (
+                      <p className="text-[10px] text-amber-200/70 mt-2 leading-relaxed">{tour.note}</p>
+                    )}
                   </div>
-                  <div className="pt-3 border-t border-white/5 flex items-center justify-between">
+                  <div className="pt-3 border-t border-white/5 flex items-center justify-between gap-3">
                     <span className="text-sm font-semibold text-[#C5A880]">
-                      from ${tour.basePriceUSD.toLocaleString()}
+                      from {formatMoney(tour.basePrice, tour.currency)}
                     </span>
                     <button
                       onClick={() => onOpenBooking({ tourId: tour.id })}
-                      className="text-[10px] font-semibold uppercase tracking-wider text-slate-300 hover:text-[#C5A880]"
+                      className="text-[10px] font-semibold uppercase tracking-wider text-slate-300 hover:text-[#C5A880] shrink-0"
                     >
                       Book
                     </button>
@@ -310,7 +318,8 @@ export const HomeView: React.FC<HomeViewProps> = ({ onOpenBooking, onOpenEnquiry
             Your Iceland journey, perfectly managed.
           </h2>
           <p className="text-slate-300 text-xs sm:text-sm font-light max-w-lg mx-auto leading-relaxed">
-            KEF transfers from ${GROUND_FLEET[0].transferRateKEF_USD}. Hourly hire and private tours with live estimates in the booking story.
+            Airport transfers from {formatMoney(AIRPORT_TRANSFER.fromEUR)} (up to {AIRPORT_TRANSFER.maxPassengers} passengers).
+            Private day tours and wedding chauffeur with live estimates in the booking story.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <motion.button

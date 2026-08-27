@@ -19,17 +19,60 @@ export interface BookingInquiry {
   guestEmail: string;
   guestPhone: string;
   notes: string;
-  estimatedUSD: number;
+  /** Numeric estimate in `estimateCurrency` */
+  estimatedAmount: number;
+  estimateCurrency: 'EUR' | 'ISK';
+  /** @deprecated kept for older localStorage entries */
+  estimatedUSD?: number;
 }
 
 const STORAGE_KEY = 'iceland-limo-bookings-v1';
+
+export type BookingInput = Omit<BookingInquiry, 'id' | 'createdAt' | 'status'>;
+
+export type AddBookingResult =
+  | { ok: true; booking: BookingInquiry }
+  | { ok: false; reason: 'duplicate'; existing: BookingInquiry; error: string };
+
+function normalizeEmail(email: string) {
+  return email.trim().toLowerCase();
+}
+
+function isActiveStatus(status: BookingInquiry['status']) {
+  return status !== 'cancelled';
+}
+
+/** Same guest + same slot + same service/vehicle (active inquiries only). */
+export function findDuplicateBooking(input: BookingInput): BookingInquiry | null {
+  const email = normalizeEmail(input.guestEmail);
+  if (!email || !input.date || !input.time) return null;
+
+  return (
+    loadBookings().find((b) => {
+      if (!isActiveStatus(b.status)) return false;
+      if (normalizeEmail(b.guestEmail) !== email) return false;
+      if (b.date !== input.date || b.time !== input.time) return false;
+      if (b.vehicleId !== input.vehicleId) return false;
+      if (b.serviceType !== input.serviceType) return false;
+      if (input.serviceType === 'day_tour' && (b.tourId || '') !== (input.tourId || '')) {
+        return false;
+      }
+      return true;
+    }) ?? null
+  );
+}
 
 export function loadBookings(): BookingInquiry[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return [];
     const parsed = JSON.parse(raw) as BookingInquiry[];
-    return Array.isArray(parsed) ? parsed : [];
+    if (!Array.isArray(parsed)) return [];
+    return parsed.map((b) => ({
+      ...b,
+      estimatedAmount: b.estimatedAmount ?? b.estimatedUSD ?? 0,
+      estimateCurrency: b.estimateCurrency ?? 'EUR',
+    }));
   } catch {
     return [];
   }
@@ -39,16 +82,27 @@ export function saveBookings(bookings: BookingInquiry[]) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(bookings));
 }
 
-export function addBooking(booking: Omit<BookingInquiry, 'id' | 'createdAt' | 'status'>): BookingInquiry {
+export function addBooking(booking: BookingInput): AddBookingResult {
+  const duplicate = findDuplicateBooking(booking);
+  if (duplicate) {
+    return {
+      ok: false,
+      reason: 'duplicate',
+      existing: duplicate,
+      error: `A booking request for this date, time, and vehicle already exists (ref ${duplicate.id}).`,
+    };
+  }
+
   const entry: BookingInquiry = {
     ...booking,
+    guestEmail: normalizeEmail(booking.guestEmail),
     id: `IL-${Date.now().toString(36).toUpperCase()}`,
     createdAt: new Date().toISOString(),
     status: 'new',
   };
   const all = [entry, ...loadBookings()];
   saveBookings(all);
-  return entry;
+  return { ok: true, booking: entry };
 }
 
 export function updateBookingStatus(id: string, status: BookingInquiry['status']) {
@@ -92,7 +146,7 @@ export function bookingToIcs(b: BookingInquiry): string {
     `Pickup: ${b.pickup}`,
     `Drop-off: ${b.dropoff}`,
     b.notes ? `Notes: ${b.notes}` : null,
-    `Estimate: $${b.estimatedUSD.toLocaleString()}`,
+    `Estimate: ${b.estimateCurrency === 'ISK' ? `${b.estimatedAmount.toLocaleString('is-IS')} ISK` : `€${b.estimatedAmount.toLocaleString()}`}`,
   ]
     .filter(Boolean)
     .join('\\n');

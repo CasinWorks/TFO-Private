@@ -20,6 +20,7 @@ import {
   updateBookingStatus,
   type BookingInquiry,
 } from '../lib/bookings';
+import { formatMoney } from '../data/fleet';
 import { hasPermission, roleLabel, type AuthSession } from '../lib/auth';
 
 interface InquiriesDashboardProps {
@@ -28,8 +29,8 @@ interface InquiriesDashboardProps {
   onLogout: () => void;
 }
 
-function formatUSD(n: number) {
-  return `$${n.toLocaleString()}`;
+function formatEstimate(b: BookingInquiry) {
+  return formatMoney(b.estimatedAmount ?? b.estimatedUSD ?? 0, b.estimateCurrency ?? 'EUR');
 }
 
 export const InquiriesDashboard: React.FC<InquiriesDashboardProps> = ({
@@ -234,7 +235,7 @@ export const InquiriesDashboard: React.FC<InquiriesDashboardProps> = ({
                         {b.guestName} · {b.vehicleName}
                       </div>
                       <div className="text-[11px] text-slate-500 mt-0.5">
-                        {b.date} at {b.time} · {formatUSD(b.estimatedUSD)}
+                        {b.date} at {b.time} · {formatEstimate(b)}
                       </div>
                     </button>
                   ))}
@@ -294,7 +295,7 @@ export const InquiriesDashboard: React.FC<InquiriesDashboardProps> = ({
                           {selected.date} at {selected.time}
                           <br />
                           <span className="text-slate-400">
-                            {selected.passengers} passengers · {formatUSD(selected.estimatedUSD)}
+                            {selected.passengers} passengers · {formatEstimate(selected)}
                           </span>
                         </div>
                       </div>

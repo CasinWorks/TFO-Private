@@ -10,7 +10,7 @@ import {
   MapPin,
   Users,
 } from 'lucide-react';
-import { GROUND_FLEET, ICELAND_TOURS } from '../data/fleet';
+import { GROUND_FLEET, ICELAND_TOURS, AIRPORT_TRANSFER, formatMoney } from '../data/fleet';
 import { addBooking, type ServiceType } from '../lib/bookings';
 import { easeLuxury, bookingPortal, pageSlide, stepStagger, stepChild } from '../lib/motion';
 
@@ -27,10 +27,6 @@ const TIME_SLOTS = [
   '07:00', '08:00', '09:00', '10:00', '11:00', '12:00',
   '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00',
 ];
-
-function formatUSD(n: number) {
-  return `$${n.toLocaleString()}`;
-}
 
 function daysInMonth(year: number, month: number) {
   return new Date(year, month + 1, 0).getDate();
@@ -63,19 +59,35 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
   const [notes, setNotes] = useState('');
   const [refId, setRefId] = useState('');
   const [direction, setDirection] = useState(1);
+  const [submitError, setSubmitError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
   const vehicle = GROUND_FLEET.find((v) => v.id === vehicleId) || GROUND_FLEET[0];
   const tour = ICELAND_TOURS.find((t) => t.id === tourId);
 
   const estimate = useMemo(() => {
-    if (serviceType === 'airport_transfer') return vehicle.transferRateKEF_USD;
-    if (serviceType === 'hourly_hire') return vehicle.hourlyRateUSD * Math.max(3, hoursNeeded);
-    if (serviceType === 'day_tour' && tour) {
-      const mult = vehicle.id.includes('land-cruiser') ? 1.15 : 1;
-      return Math.round(tour.basePriceUSD * mult);
+    if (serviceType === 'airport_transfer') {
+      return { amount: vehicle.transferRateKEF_EUR, currency: 'EUR' as const };
     }
-    return vehicle.transferRateKEF_USD;
+    if (serviceType === 'hourly_hire') {
+      return {
+        amount: vehicle.hourlyRateEUR * Math.max(3, hoursNeeded),
+        currency: 'EUR' as const,
+      };
+    }
+    if (serviceType === 'day_tour' && tour) {
+      return { amount: tour.basePrice, currency: tour.currency };
+    }
+    return { amount: vehicle.transferRateKEF_EUR, currency: 'EUR' as const };
   }, [serviceType, vehicle, tour, hoursNeeded]);
+
+  const estimateLabel = formatMoney(estimate.amount, estimate.currency);
+  const maxPassengers =
+    serviceType === 'airport_transfer'
+      ? Math.min(vehicle.passengers, AIRPORT_TRANSFER.maxPassengers)
+      : serviceType === 'day_tour' && tour
+        ? Math.min(vehicle.passengers, tour.maxPassengers)
+        : vehicle.passengers;
 
   const steps: Step[] = ['welcome', 'vehicle', 'service', 'calendar', 'details', 'confirm'];
   const stepIndex = steps.indexOf(step);
@@ -102,7 +114,11 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
   };
 
   const submit = () => {
-    const booking = addBooking({
+    if (submitting) return;
+    setSubmitting(true);
+    setSubmitError('');
+
+    const result = addBooking({
       serviceType,
       vehicleId: vehicle.id,
       vehicleName: vehicle.name,
@@ -118,11 +134,20 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
       guestEmail,
       guestPhone,
       notes,
-      estimatedUSD: estimate,
+      estimatedAmount: estimate.amount,
+      estimateCurrency: estimate.currency,
     });
-    setRefId(booking.id);
+
+    if (result.ok === false) {
+      setSubmitError(result.error);
+      setSubmitting(false);
+      return;
+    }
+
+    setRefId(result.booking.id);
     setDirection(1);
     setStep('confirm');
+    setSubmitting(false);
   };
 
   const monthLabel = new Date(calYear, calMonth, 1).toLocaleString('en', {
@@ -253,7 +278,10 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
                       key={v.id}
                       type="button"
                       variants={stepChild}
-                      onClick={() => setVehicleId(v.id)}
+                      onClick={() => {
+                        setVehicleId(v.id);
+                        setSubmitError('');
+                      }}
                       whileHover={{ y: -2 }}
                       whileTap={{ scale: 0.995 }}
                       className={`w-full text-left overflow-hidden border transition-colors ${
@@ -282,10 +310,10 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
                               <Users className="w-3.5 h-3.5 text-[#C5A880]" /> {v.passengers} pax
                             </span>
                             <span className="inline-flex items-center gap-1.5">
-                              <Car className="w-3.5 h-3.5 text-[#C5A880]" /> KEF from {formatUSD(v.transferRateKEF_USD)}
+                              <Car className="w-3.5 h-3.5 text-[#C5A880]" /> KEF from {formatMoney(v.transferRateKEF_EUR)}
                             </span>
                             <span className="inline-flex items-center gap-1.5">
-                              <Clock className="w-3.5 h-3.5 text-[#C5A880]" /> {formatUSD(v.hourlyRateUSD)}/hr
+                              <Clock className="w-3.5 h-3.5 text-[#C5A880]" /> {formatMoney(v.hourlyRateEUR)}/hr
                             </span>
                           </div>
                         </div>
@@ -311,17 +339,17 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
                     {
                       id: 'airport_transfer' as const,
                       title: 'Airport transfer',
-                      blurb: `KEF ↔ Reykjavík · from ${formatUSD(vehicle.transferRateKEF_USD)}`,
+                      blurb: `${AIRPORT_TRANSFER.route} · from ${formatMoney(AIRPORT_TRANSFER.fromEUR)} · up to ${AIRPORT_TRANSFER.maxPassengers} passengers`,
                     },
                     {
                       id: 'hourly_hire' as const,
                       title: 'Hourly chauffeur',
-                      blurb: `${formatUSD(vehicle.hourlyRateUSD)}/hr · 3 hour minimum`,
+                      blurb: `${formatMoney(vehicle.hourlyRateEUR)}/hr · 3 hour minimum`,
                     },
                     {
                       id: 'day_tour' as const,
-                      title: 'Private day tour',
-                      blurb: 'Golden Circle, South Coast, Blue Lagoon, aurora',
+                      title: 'Private day tour / special',
+                      blurb: 'Jökulsárlón, South Coast, Golden Circle, Westman Islands, aurora, wedding',
                     },
                   ] as const
                 ).map((s) => (
@@ -365,7 +393,10 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
                     <button
                       key={t.id}
                       type="button"
-                      onClick={() => setTourId(t.id)}
+                      onClick={() => {
+                        setTourId(t.id);
+                        setSubmitError('');
+                      }}
                       className={`w-full text-left p-4 border transition-all ${
                         tourId === t.id
                           ? 'border-[#C5A880] bg-[#C5A880]/10'
@@ -373,12 +404,22 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
                       }`}
                     >
                       <div className="flex justify-between gap-3">
-                        <span className="text-sm text-white">{t.title}</span>
+                        <div>
+                          <span className="text-sm text-white block">{t.title}</span>
+                          {t.subtitle && (
+                            <span className="text-[11px] text-[#C5A880]">{t.subtitle}</span>
+                          )}
+                        </div>
                         <span className="text-sm text-[#C5A880] shrink-0">
-                          from {formatUSD(t.basePriceUSD)}
+                          from {formatMoney(t.basePrice, t.currency)}
                         </span>
                       </div>
-                      <p className="text-[11px] text-slate-500 mt-1">{t.durationHours}h · ~{t.distanceKm} km</p>
+                      <p className="text-[11px] text-slate-500 mt-1">
+                        {t.durationHours}h · up to {t.maxPassengers} passengers
+                      </p>
+                      {t.note && (
+                        <p className="text-[11px] text-amber-200/80 mt-1.5">{t.note}</p>
+                      )}
                     </button>
                   ))}
                 </motion.div>
@@ -386,7 +427,7 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
 
               <motion.div variants={stepChild} className="pt-2 text-sm text-slate-300">
                 Estimated total:{' '}
-                <span className="text-[#C5A880] font-semibold text-lg">{formatUSD(estimate)}</span>
+                <span className="text-[#C5A880] font-semibold text-lg">{estimateLabel}</span>
               </motion.div>
             </div>
           )}
@@ -455,7 +496,10 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
                         key={value}
                         type="button"
                         disabled={disabled}
-                        onClick={() => setDate(value)}
+                        onClick={() => {
+                          setDate(value);
+                          setSubmitError('');
+                        }}
                         className={`aspect-square text-sm transition-colors ${
                           disabled
                             ? 'text-slate-700 cursor-not-allowed'
@@ -480,7 +524,10 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
                     <button
                       key={t}
                       type="button"
-                      onClick={() => setTime(t)}
+                      onClick={() => {
+                        setTime(t);
+                        setSubmitError('');
+                      }}
                       className={`px-3 py-2 text-xs border transition-colors ${
                         time === t
                           ? 'border-[#C5A880] bg-[#C5A880] text-[#080B0E] font-semibold'
@@ -530,7 +577,10 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
                     required
                     type="email"
                     value={guestEmail}
-                    onChange={(e) => setGuestEmail(e.target.value)}
+                    onChange={(e) => {
+                      setGuestEmail(e.target.value);
+                      setSubmitError('');
+                    }}
                     className="w-full bg-[#0C1017] border border-white/15 px-3 py-2.5 text-white outline-none focus:border-[#C5A880]"
                   />
                 </div>
@@ -559,10 +609,10 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
                   <input
                     type="number"
                     min={1}
-                    max={vehicle.passengers}
-                    value={passengers}
+                    max={maxPassengers}
+                    value={Math.min(passengers, maxPassengers)}
                     onChange={(e) =>
-                      setPassengers(Math.min(vehicle.passengers, Math.max(1, parseInt(e.target.value) || 1)))
+                      setPassengers(Math.min(maxPassengers, Math.max(1, parseInt(e.target.value) || 1)))
                     }
                     className="w-28 bg-[#0C1017] border border-white/15 px-3 py-2.5 text-white outline-none focus:border-[#C5A880]"
                   />
@@ -595,9 +645,18 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
                 </div>
                 <div className="flex justify-between text-sm pt-2 border-t border-white/10">
                   <span className="text-slate-300">Estimated total</span>
-                  <span className="text-[#C5A880] font-semibold">{formatUSD(estimate)}</span>
+                  <span className="text-[#C5A880] font-semibold">{estimateLabel}</span>
                 </div>
               </motion.div>
+
+              {submitError && (
+                <motion.div
+                  variants={stepChild}
+                  className="border border-red-500/35 bg-red-950/35 px-4 py-3 text-xs text-red-300 leading-relaxed"
+                >
+                  {submitError}
+                </motion.div>
+              )}
             </div>
           )}
 
@@ -626,7 +685,7 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
                 <p>
                   {vehicle.name} · {date} at {time}
                 </p>
-                <p>Estimate {formatUSD(estimate)}</p>
+                <p>Estimate {estimateLabel}</p>
               </motion.div>
               <motion.button
                 variants={stepChild}
@@ -657,7 +716,7 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
               <div className="text-xs text-slate-500 hidden sm:block">
                 {step === 'details' ? (
                   <>
-                    Estimate <span className="text-[#C5A880] font-semibold">{formatUSD(estimate)}</span>
+                    Estimate <span className="text-[#C5A880] font-semibold">{estimateLabel}</span>
                   </>
                 ) : (
                   vehicle.name
@@ -665,11 +724,15 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
               </div>
               <button
                 type="button"
-                disabled={!canContinue()}
+                disabled={!canContinue() || submitting}
                 onClick={() => (step === 'details' ? submit() : goNext())}
                 className="ml-auto inline-flex items-center gap-2 bg-[#C5A880] hover:bg-[#d6ba94] disabled:opacity-40 disabled:cursor-not-allowed text-[#080B0E] font-semibold text-xs tracking-[0.2em] uppercase px-7 py-3.5"
               >
-                {step === 'details' ? 'Submit booking' : 'Continue'}
+                {step === 'details'
+                  ? submitting
+                    ? 'Submitting…'
+                    : 'Submit booking'
+                  : 'Continue'}
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
