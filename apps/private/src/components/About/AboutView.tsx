@@ -1,6 +1,8 @@
 import React from 'react';
+import { motion } from 'motion/react';
 import { ArrowRight, Plane, Car, ShieldCheck, Globe2, Users } from 'lucide-react';
 import { SITES } from '../../config/sites';
+import { fadeUp, staggerContainer, heroReveal } from '../../lib/motion';
 
 interface AboutViewProps {
   onOpenEnquiry: (topic?: string) => void;
@@ -18,24 +20,31 @@ export const AboutView: React.FC<AboutViewProps> = ({ onOpenEnquiry, onBackHome 
           ← Back to portal
         </button>
 
-        <div className="space-y-5 mb-16 sm:mb-20">
-          <span className="text-[11px] font-semibold tracking-[0.28em] uppercase text-[#C5A880]">
+        <motion.div
+          className="space-y-5 mb-16 sm:mb-20"
+          variants={staggerContainer}
+          initial="hidden"
+          animate="show"
+        >
+          <motion.span variants={heroReveal} className="block text-[11px] font-semibold tracking-[0.28em] uppercase text-[#C5A880]">
             About TFO Private
-          </span>
-          <h1 className="font-serif-luxury text-4xl sm:text-5xl md:text-6xl text-white leading-[1.08]">
+          </motion.span>
+          <motion.h1 variants={heroReveal} className="font-serif-luxury text-4xl sm:text-5xl md:text-6xl text-white leading-[1.08]">
             One standard.<br />
             <span className="text-[#C5A880] font-light">Two specialist houses.</span>
-          </h1>
-          <p className="text-slate-400 text-sm sm:text-base font-light leading-relaxed max-w-2xl">
+          </motion.h1>
+          <motion.p variants={heroReveal} className="text-slate-400 text-sm sm:text-base font-light leading-relaxed max-w-2xl">
             TFO Private is the umbrella for discreet private aviation and luxury ground transport.
             We connect runway to road under one concierge standard — without mixing the brands into
             a single booking form.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
-          <a
+          <motion.a
             href={SITES.jets}
+            {...fadeUp}
+            whileHover={{ y: -4 }}
             className="group border border-white/10 hover:border-[#C5A880]/50 p-8 sm:p-10 transition-colors bg-[#0C1017]"
           >
             <Plane className="w-6 h-6 text-[#C5A880] mb-5" />
@@ -47,10 +56,13 @@ export const AboutView: React.FC<AboutViewProps> = ({ onOpenEnquiry, onBackHome 
             <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-[#C5A880] font-semibold">
               Visit aviation site <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </span>
-          </a>
+          </motion.a>
 
-          <a
+          <motion.a
             href={SITES.limousine}
+            {...fadeUp}
+            transition={{ ...fadeUp.transition, delay: 0.1 }}
+            whileHover={{ y: -4 }}
             className="group border border-white/10 hover:border-[#C5A880]/50 p-8 sm:p-10 transition-colors bg-[#0C1017]"
           >
             <Car className="w-6 h-6 text-[#C5A880] mb-5" />
@@ -62,10 +74,10 @@ export const AboutView: React.FC<AboutViewProps> = ({ onOpenEnquiry, onBackHome 
             <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-[#C5A880] font-semibold">
               Visit ground site <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </span>
-          </a>
+          </motion.a>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-16 border-y border-white/10 py-12">
+        <motion.div {...fadeUp} className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-16 border-y border-white/10 py-12">
           {[
             {
               icon: ShieldCheck,
@@ -89,9 +101,9 @@ export const AboutView: React.FC<AboutViewProps> = ({ onOpenEnquiry, onBackHome 
               <p className="text-xs text-slate-400 leading-relaxed">{item.body}</p>
             </div>
           ))}
-        </div>
+        </motion.div>
 
-        <div className="flex flex-wrap gap-4">
+        <motion.div {...fadeUp} className="flex flex-wrap gap-4">
           <button
             onClick={() => onOpenEnquiry('General Contact')}
             className="bg-[#C5A880] hover:bg-[#d6ba94] text-[#080B0E] font-semibold text-xs tracking-[0.2em] uppercase px-7 py-3.5 transition-all"
@@ -104,7 +116,7 @@ export const AboutView: React.FC<AboutViewProps> = ({ onOpenEnquiry, onBackHome 
           >
             Book Iceland Limousine
           </a>
-        </div>
+        </motion.div>
       </section>
     </div>
   );

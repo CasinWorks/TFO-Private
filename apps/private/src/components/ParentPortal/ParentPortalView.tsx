@@ -1,6 +1,8 @@
 import React from 'react';
+import { motion } from 'motion/react';
 import { ActiveDivision } from '../../types';
 import { SITES } from '../../config/sites';
+import { fadeUp, heroReveal, staggerContainer, staggerItem, easeLuxury } from '../../lib/motion';
 import heroBgImage from '../../assets/hero-jet.jpg';
 import limousineCarImage from '../../assets/limousine-car.jpg';
 import tfoJetsImage from '../../assets/tfo-jets-division.jpg';
@@ -41,41 +43,43 @@ export const ParentPortalView: React.FC<ParentPortalViewProps> = ({
       
       {/* 1. HERO SECTION & INTEGRATED TRUST INDICATORS (Seamless Single-Hero Canvas) */}
       <section className="relative min-h-screen flex flex-col justify-between pt-24 sm:pt-28 pb-0 overflow-hidden">
-        {/* Background Image: Full Bleed Jet on Tarmac Runway */}
-        <div className="absolute inset-0 z-0">
+        <motion.div
+          className="absolute inset-0 z-0"
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 2.2, ease: easeLuxury }}
+        >
           <img 
             src={heroBgImage} 
             alt="Private Aviation & Luxury Travel Runway" 
-            className="w-full h-full object-cover object-right md:object-center brightness-[0.80] scale-100"
+            className="w-full h-full object-cover object-right md:object-center brightness-[0.80]"
           />
-          {/* Subtle Vignettes & Lighting Gradients matching mockup */}
           <div className="absolute inset-0 bg-gradient-to-r from-[#080B0E]/90 via-[#080B0E]/60 to-transparent w-full md:w-3/4" />
           <div className="absolute inset-0 bg-gradient-to-b from-[#080B0E]/70 via-transparent to-[#080B0E]/80" />
-        </div>
+        </motion.div>
 
-        {/* Hero Top Content (Left Aligned) */}
         <div className="relative z-10 max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 w-full my-auto py-12 sm:py-16">
-          <div className="max-w-2xl space-y-6 sm:space-y-7">
-            
-            {/* Overline */}
-            <div className="text-[11px] sm:text-xs font-sans font-semibold tracking-[0.25em] uppercase text-[#C5A880]">
+          <motion.div
+            className="max-w-2xl space-y-6 sm:space-y-7"
+            variants={staggerContainer}
+            initial="hidden"
+            animate="show"
+          >
+            <motion.div variants={heroReveal} className="text-[11px] sm:text-xs font-sans font-semibold tracking-[0.25em] uppercase text-[#C5A880]">
               THE JOURNEY, HANDLED.
-            </div>
+            </motion.div>
 
-            {/* Main Headline */}
-            <h1 className="font-serif-luxury text-5xl sm:text-6xl md:text-7xl font-normal text-white leading-[1.08] tracking-tight">
+            <motion.h1 variants={heroReveal} className="font-serif-luxury text-5xl sm:text-6xl md:text-7xl font-normal text-white leading-[1.08] tracking-tight">
               Private Aviation<br />
               <span className="text-[#C5A880] font-serif-luxury font-light mr-3">&amp;</span>
               <span className="text-white font-serif-luxury font-light">Luxury Travel</span>
-            </h1>
+            </motion.h1>
 
-            {/* Subtitle Paragraph */}
-            <p className="text-slate-300 text-sm sm:text-base font-light max-w-lg leading-relaxed">
+            <motion.p variants={heroReveal} className="text-slate-300 text-sm sm:text-base font-light max-w-lg leading-relaxed">
               From the aircraft to the road, we take care of every detail so you can enjoy the journey.
-            </p>
+            </motion.p>
 
-            {/* Dual CTA Buttons */}
-            <div className="pt-2 flex flex-wrap items-center gap-4">
+            <motion.div variants={heroReveal} className="pt-2 flex flex-wrap items-center gap-4">
               <button
                 id="hero-btn-private-aviation"
                 onClick={goJets}
@@ -93,77 +97,49 @@ export const ParentPortalView: React.FC<ParentPortalViewProps> = ({
                 <span>EXPERIENCE ICELAND</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
-            </div>
-
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
 
-        {/* 2. 4 TRUST INDICATORS ROW (Transparent & seamlessly resting on tarmac background) */}
-        <div className="relative z-20 w-full border-t border-white/15 bg-gradient-to-t from-[#080B0E]/90 via-[#080B0E]/40 to-transparent backdrop-blur-[2px] py-10 sm:py-14 px-6 sm:px-10 lg:px-16 xl:px-20">
+        <motion.div
+          className="relative z-20 w-full border-t border-white/15 bg-gradient-to-t from-[#080B0E]/90 via-[#080B0E]/40 to-transparent backdrop-blur-[2px] py-10 sm:py-14 px-6 sm:px-10 lg:px-16 xl:px-20"
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: '-40px' }}
+          variants={staggerContainer}
+        >
           <div className="max-w-[1720px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-white/15">
-            
-            {/* Pillar 1: Worldwide Operations */}
-            <div className="flex flex-col items-center text-center py-6 sm:py-2 sm:px-6 lg:px-8 first:pl-0 space-y-3">
-              <div className="text-[#C5A880]">
-                <Globe className="w-8 h-8 sm:w-9 sm:h-9 stroke-[1.2]" />
-              </div>
-              <h3 className="font-serif-luxury text-xl sm:text-2xl font-medium text-white tracking-wide">
-                Worldwide Operations
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-300 font-light leading-relaxed max-w-xs">
-                Aviation services and luxury travel, wherever you need us.
-              </p>
-            </div>
-
-            {/* Pillar 2: Personal Service */}
-            <div className="flex flex-col items-center text-center py-6 sm:py-2 sm:px-6 lg:px-8 space-y-3">
-              <div className="text-[#C5A880]">
-                <User className="w-8 h-8 sm:w-9 sm:h-9 stroke-[1.2]" />
-              </div>
-              <h3 className="font-serif-luxury text-xl sm:text-2xl font-medium text-white tracking-wide">
-                Personal Service
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-300 font-light leading-relaxed max-w-xs">
-                A dedicated team, available 24/7 to support your journey.
-              </p>
-            </div>
-
-            {/* Pillar 3: Discretion & Trust */}
-            <div className="flex flex-col items-center text-center py-6 sm:py-2 sm:px-6 lg:px-8 space-y-3">
-              <div className="text-[#C5A880]">
-                <Gem className="w-8 h-8 sm:w-9 sm:h-9 stroke-[1.2]" />
-              </div>
-              <h3 className="font-serif-luxury text-xl sm:text-2xl font-medium text-white tracking-wide">
-                Discretion &amp; Trust
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-300 font-light leading-relaxed max-w-xs">
-                Your privacy is our priority. Always.
-              </p>
-            </div>
-
-            {/* Pillar 4: Iceland Experts */}
-            <div className="flex flex-col items-center text-center py-6 sm:py-2 sm:px-6 lg:px-8 last:pr-0 space-y-3">
-              <div className="text-[#C5A880]">
-                <Mountain className="w-8 h-8 sm:w-9 sm:h-9 stroke-[1.2]" />
-              </div>
-              <h3 className="font-serif-luxury text-xl sm:text-2xl font-medium text-white tracking-wide">
-                Iceland Experts
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-300 font-light leading-relaxed max-w-xs">
-                Local knowledge and access to extraordinary experiences.
-              </p>
-            </div>
-
+            {[
+              { icon: Globe, title: 'Worldwide Operations', body: 'Aviation services and luxury travel, wherever you need us.' },
+              { icon: User, title: 'Personal Service', body: 'A dedicated team, available 24/7 to support your journey.' },
+              { icon: Gem, title: 'Discretion & Trust', body: 'Your privacy is our priority. Always.' },
+              { icon: Mountain, title: 'Iceland Experts', body: 'Local knowledge and access to extraordinary experiences.' },
+            ].map((pillar) => (
+              <motion.div
+                key={pillar.title}
+                variants={staggerItem}
+                className="flex flex-col items-center text-center py-6 sm:py-2 sm:px-6 lg:px-8 first:pl-0 last:pr-0 space-y-3"
+              >
+                <div className="text-[#C5A880]">
+                  <pillar.icon className="w-8 h-8 sm:w-9 sm:h-9 stroke-[1.2]" />
+                </div>
+                <h3 className="font-serif-luxury text-xl sm:text-2xl font-medium text-white tracking-wide">
+                  {pillar.title}
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-300 font-light leading-relaxed max-w-xs">
+                  {pillar.body}
+                </p>
+              </motion.div>
+            ))}
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* 3. TWO SPECIALIST DIVISIONS SECTION (CRISP LIGHT OFF-WHITE BACKGROUND) */}
       <section className="py-24 px-6 sm:px-10 lg:px-16 xl:px-20 bg-[#F6F7F9] text-[#1A202C]">
         <div className="max-w-[1720px] mx-auto">
           
-          {/* Section Heading */}
-          <div className="text-center max-w-3xl mx-auto space-y-3 mb-16">
+          <motion.div {...fadeUp} className="text-center max-w-3xl mx-auto space-y-3 mb-16">
             <span className="text-[11px] font-sans font-semibold tracking-[0.25em] uppercase text-[#C5A880] block">
               TWO SPECIALIST DIVISIONS. ONE SEAMLESS EXPERIENCE.
             </span>
@@ -173,16 +149,16 @@ export const ParentPortalView: React.FC<ParentPortalViewProps> = ({
             <p className="text-xs sm:text-sm text-slate-600 font-light leading-relaxed max-w-xl mx-auto">
               Whether you arrive by private jet or explore Iceland from the ground, our team is here to deliver a seamless journey, start to finish.
             </p>
-          </div>
+          </motion.div>
 
-          {/* Two Split Cards */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 xl:gap-14">
-            
-            {/* Card 1: TFO JETS → sibling site */}
-            <div 
+            <motion.div 
               id="card-tfo-jets-division"
               onClick={goJets}
-              className="group bg-white border border-slate-200/80 rounded-none shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col justify-between"
+              {...fadeUp}
+              whileHover={{ y: -6 }}
+              transition={{ ...fadeUp.transition, y: { duration: 0.35 } }}
+              className="group bg-white border border-slate-200/80 rounded-none shadow-sm hover:shadow-xl transition-shadow duration-300 cursor-pointer flex flex-col justify-between"
             >
               <div className="relative h-64 sm:h-72 md:h-80 overflow-visible bg-slate-900">
                 <div className="w-full h-full overflow-hidden">
@@ -219,13 +195,15 @@ export const ParentPortalView: React.FC<ParentPortalViewProps> = ({
                   </span>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
-            {/* Card 2: ICELAND LIMOUSINE → sibling site */}
-            <div 
+            <motion.div 
               id="card-iceland-limousine-division"
               onClick={goLimousine}
-              className="group bg-white border border-slate-200/80 rounded-none shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col justify-between"
+              {...fadeUp}
+              transition={{ ...fadeUp.transition, delay: 0.12 }}
+              whileHover={{ y: -6 }}
+              className="group bg-white border border-slate-200/80 rounded-none shadow-sm hover:shadow-xl transition-shadow duration-300 cursor-pointer flex flex-col justify-between"
             >
               <div className="relative h-64 sm:h-72 md:h-80 overflow-visible bg-slate-900">
                 <div className="w-full h-full overflow-hidden">
@@ -262,7 +240,7 @@ export const ParentPortalView: React.FC<ParentPortalViewProps> = ({
                   </span>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
           </div>
         </div>
@@ -272,14 +250,14 @@ export const ParentPortalView: React.FC<ParentPortalViewProps> = ({
       <section id="journeys-section" className="py-24 px-6 sm:px-10 lg:px-16 xl:px-20 bg-[#080B0E]">
         <div className="max-w-[1720px] w-full mx-auto">
           
-          <div className="text-center max-w-3xl mx-auto space-y-3 mb-16 sm:mb-20">
+          <motion.div {...fadeUp} className="text-center max-w-3xl mx-auto space-y-3 mb-16 sm:mb-20">
             <span className="text-[11px] sm:text-xs font-sans font-semibold tracking-[0.25em] uppercase text-[#C5A880]">
               JOURNEYS DESIGNED AROUND YOU
             </span>
             <h2 className="font-serif-luxury text-3xl sm:text-4xl md:text-5xl font-normal text-white">
               More than a service. A complete experience.
             </h2>
-          </div>
+          </motion.div>
 
           {/* 4-column matrix fitting the full grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-6 lg:gap-6 xl:gap-8">

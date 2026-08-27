@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
 import {
   ArrowLeft,
   ArrowRight,
@@ -11,6 +12,7 @@ import {
 } from 'lucide-react';
 import { GROUND_FLEET, ICELAND_TOURS } from '../data/fleet';
 import { addBooking, type ServiceType } from '../lib/bookings';
+import { easeLuxury, overlayReveal, pageSlide } from '../lib/motion';
 
 type Step = 'welcome' | 'vehicle' | 'service' | 'calendar' | 'details' | 'confirm';
 
@@ -125,9 +127,14 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
   const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
   return (
-    <div className="fixed inset-0 z-[70] bg-[#080B0E] overflow-y-auto">
+    <motion.div
+      className="fixed inset-0 z-[70] bg-[#080B0E] overflow-y-auto"
+      variants={overlayReveal}
+      initial="hidden"
+      animate="show"
+      exit="exit"
+    >
       <div className="min-h-full flex flex-col">
-        {/* Progress */}
         <header className="sticky top-0 z-10 bg-[#080B0E]/95 backdrop-blur border-b border-white/10 px-6 sm:px-10 py-4">
           <div className="max-w-3xl mx-auto flex items-center justify-between gap-4">
             <button
@@ -139,12 +146,15 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
             </button>
             <div className="flex-1 max-w-xs hidden sm:flex gap-1.5">
               {steps.filter((s) => s !== 'confirm').map((s, i) => (
-                <div
-                  key={s}
-                  className={`h-1 flex-1 rounded-full ${
-                    i <= stepIndex && step !== 'confirm' ? 'bg-[#C5A880]' : 'bg-white/10'
-                  }`}
-                />
+                <div key={s} className="h-1 flex-1 rounded-full bg-white/10 overflow-hidden">
+                  <motion.div
+                    className="h-full bg-[#C5A880] origin-left"
+                    initial={false}
+                    animate={{ scaleX: i <= stepIndex && step !== 'confirm' ? 1 : 0 }}
+                    transition={{ duration: 0.45, ease: easeLuxury }}
+                    style={{ transformOrigin: 'left' }}
+                  />
+                </div>
               ))}
             </div>
             <span className="text-[10px] tracking-[0.2em] uppercase text-[#C5A880]">
@@ -154,6 +164,14 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
         </header>
 
         <div className="flex-1 max-w-3xl mx-auto w-full px-6 sm:px-10 py-10 sm:py-14">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={step}
+              variants={pageSlide}
+              initial="enter"
+              animate="center"
+              exit="exit"
+            >
           {step === 'welcome' && (
             <div className="space-y-8">
               <div className="space-y-4">
@@ -569,10 +587,17 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
               </button>
             </div>
           )}
+            </motion.div>
+          </AnimatePresence>
         </div>
 
         {step !== 'welcome' && step !== 'confirm' && (
-          <div className="sticky bottom-0 border-t border-white/10 bg-[#080B0E]/95 backdrop-blur px-6 sm:px-10 py-4">
+          <motion.div
+            initial={{ y: 40, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.45, ease: easeLuxury }}
+            className="sticky bottom-0 border-t border-white/10 bg-[#080B0E]/95 backdrop-blur px-6 sm:px-10 py-4"
+          >
             <div className="max-w-3xl mx-auto flex items-center justify-between gap-4">
               <div className="text-xs text-slate-500 hidden sm:block">
                 {step === 'details' ? (
@@ -593,9 +618,9 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
-          </div>
+          </motion.div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { AnimatePresence } from 'motion/react';
 import { Navigation } from './components/Navigation';
 import { Footer } from './components/Footer';
 import { HomeView } from './components/HomeView';
@@ -141,14 +142,17 @@ export default function App() {
         />
       )}
 
-      {bookingOpen && (
-        <StoryBooking
-          initialVehicleId={bookingVehicleId}
-          initialTourId={bookingTourId}
-          onClose={closeBooking}
-          onComplete={closeBooking}
-        />
-      )}
+      <AnimatePresence>
+        {bookingOpen && (
+          <StoryBooking
+            key="story-booking"
+            initialVehicleId={bookingVehicleId}
+            initialTourId={bookingTourId}
+            onClose={closeBooking}
+            onComplete={closeBooking}
+          />
+        )}
+      </AnimatePresence>
 
       <EnquiryModal
         isOpen={enquiryOpen}

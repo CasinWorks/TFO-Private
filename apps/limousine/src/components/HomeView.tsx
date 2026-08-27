@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'motion/react';
 import {
   ArrowRight,
   Users,
@@ -12,6 +13,7 @@ import {
   MapPin,
 } from 'lucide-react';
 import { GROUND_FLEET, ICELAND_TOURS } from '../data/fleet';
+import { fadeUp, easeLuxury, staggerContainer, heroReveal } from '../lib/motion';
 
 interface HomeViewProps {
   onOpenBooking: (opts?: { vehicleId?: string; tourId?: string }) => void;
@@ -27,9 +29,13 @@ export const HomeView: React.FC<HomeViewProps> = ({ onOpenBooking, onOpenEnquiry
 
   return (
     <div className="w-full bg-[#080B0E] text-slate-200">
-      {/* Hero */}
       <section className="relative min-h-screen flex flex-col justify-center pt-28 pb-16 overflow-hidden">
-        <div className="absolute inset-0 z-0">
+        <motion.div
+          className="absolute inset-0 z-0"
+          initial={{ scale: 1.12 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 2.4, ease: easeLuxury }}
+        >
           <img
             src={HERO_IMG}
             alt="Luxury Volvo SUV chauffeur service"
@@ -37,22 +43,27 @@ export const HomeView: React.FC<HomeViewProps> = ({ onOpenBooking, onOpenEnquiry
           />
           <div className="absolute inset-0 bg-gradient-to-r from-[#080B0E]/92 via-[#080B0E]/65 to-transparent w-full md:w-3/4" />
           <div className="absolute inset-0 bg-gradient-to-b from-[#080B0E]/70 via-transparent to-[#080B0E]" />
-        </div>
+        </motion.div>
 
         <div className="relative z-10 max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 w-full">
-          <div className="max-w-2xl space-y-6 sm:space-y-7">
-            <div className="text-[11px] sm:text-xs font-sans font-semibold tracking-[0.25em] uppercase text-[#C5A880]">
+          <motion.div
+            className="max-w-2xl space-y-6 sm:space-y-7"
+            variants={staggerContainer}
+            initial="hidden"
+            animate="show"
+          >
+            <motion.div variants={heroReveal} className="text-[11px] sm:text-xs font-sans font-semibold tracking-[0.25em] uppercase text-[#C5A880]">
               Iceland Limousine · Control your own time
-            </div>
-            <h1 className="font-serif-luxury text-5xl sm:text-6xl md:text-7xl font-normal text-white leading-[1.08] tracking-tight">
+            </motion.div>
+            <motion.h1 variants={heroReveal} className="font-serif-luxury text-5xl sm:text-6xl md:text-7xl font-normal text-white leading-[1.08] tracking-tight">
               Luxury Car &amp;<br />
               <span className="text-[#C5A880] font-light">Private Chauffeur</span>
-            </h1>
-            <p className="text-slate-300 text-sm sm:text-base font-light max-w-lg leading-relaxed">
+            </motion.h1>
+            <motion.p variants={heroReveal} className="text-slate-300 text-sm sm:text-base font-light max-w-lg leading-relaxed">
               Experience Iceland in style and comfort. Private car and chauffeur service with our
               Volvo XC90 (up to 6 passengers) and Toyota Land Cruiser 150 VX (up to 4 passengers).
-            </p>
-            <div className="pt-2 flex flex-wrap items-center gap-4">
+            </motion.p>
+            <motion.div variants={heroReveal} className="pt-2 flex flex-wrap items-center gap-4">
               <button
                 onClick={() => onOpenBooking()}
                 className="inline-flex items-center gap-2.5 bg-[#C5A880] hover:bg-[#d6ba94] text-[#080B0E] font-semibold text-xs tracking-[0.18em] uppercase px-6 sm:px-7 py-3.5 transition-all shadow-xl cursor-pointer"
@@ -65,8 +76,8 @@ export const HomeView: React.FC<HomeViewProps> = ({ onOpenBooking, onOpenEnquiry
               >
                 View Fleet
               </button>
-            </div>
-            <div className="pt-4 flex flex-wrap items-center gap-6 text-xs text-slate-400">
+            </motion.div>
+            <motion.div variants={heroReveal} className="pt-4 flex flex-wrap items-center gap-6 text-xs text-slate-400">
               <span className="flex items-center gap-1.5">
                 <CheckCircle className="w-4 h-4 text-[#C5A880]" /> All-Weather AWD / 4WD
               </span>
@@ -76,22 +87,21 @@ export const HomeView: React.FC<HomeViewProps> = ({ onOpenBooking, onOpenEnquiry
               <span className="flex items-center gap-1.5">
                 <CheckCircle className="w-4 h-4 text-[#C5A880]" /> KEF VIP Transfers
               </span>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Services */}
       <section id="services" className="py-24 px-6 sm:px-10 lg:px-16 xl:px-20 bg-[#F6F7F9] text-[#1A202C]">
         <div className="max-w-[1720px] mx-auto">
-          <div className="text-center max-w-3xl mx-auto space-y-3 mb-16">
+          <motion.div {...fadeUp} className="text-center max-w-3xl mx-auto space-y-3 mb-16">
             <span className="text-[11px] font-sans font-semibold tracking-[0.25em] uppercase text-[#C5A880] block">
               How We Serve You
             </span>
             <h2 className="font-serif-luxury text-4xl sm:text-5xl font-normal text-[#0F172A]">
               From runway to road.
             </h2>
-          </div>
+          </motion.div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 xl:gap-8">
             {[
               {
@@ -109,26 +119,28 @@ export const HomeView: React.FC<HomeViewProps> = ({ onOpenBooking, onOpenEnquiry
                 title: 'Bespoke Day Tours',
                 body: 'Golden Circle, South Coast, Blue Lagoon, aurora hunts — designed around you.',
               },
-            ].map((item) => (
-              <div
+            ].map((item, i) => (
+              <motion.div
                 key={item.title}
-                className="group bg-white border border-slate-200/80 p-8 hover:shadow-xl transition-all"
+                {...fadeUp}
+                transition={{ ...fadeUp.transition, delay: i * 0.1 }}
+                whileHover={{ y: -6 }}
+                className="group bg-white border border-slate-200/80 p-8 hover:shadow-xl transition-shadow"
               >
                 <div className="w-14 h-14 rounded-full bg-[#111827] border-2 border-[#C5A880]/70 text-[#C5A880] flex items-center justify-center mb-6">
                   <item.icon className="w-6 h-6 stroke-[1.5]" />
                 </div>
                 <h3 className="font-serif-luxury text-xl text-[#0F172A] mb-2">{item.title}</h3>
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">{item.body}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Fleet — XC90 + Land Cruiser only */}
       <section id="fleet" className="py-24 px-6 sm:px-10 lg:px-16 xl:px-20 bg-[#080B0E]">
         <div className="max-w-[1720px] mx-auto">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+          <motion.div {...fadeUp} className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
             <div className="space-y-3 max-w-xl">
               <span className="text-[10px] font-semibold tracking-[0.25em] uppercase text-[#C5A880]">
                 Our Luxury Fleet
@@ -141,13 +153,16 @@ export const HomeView: React.FC<HomeViewProps> = ({ onOpenBooking, onOpenEnquiry
                 Cruiser 150 VX (up to 4 passengers).
               </p>
             </div>
-          </div>
+          </motion.div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 xl:gap-14">
-            {GROUND_FLEET.map((vehicle) => (
-              <div
+            {GROUND_FLEET.map((vehicle, i) => (
+              <motion.div
                 key={vehicle.id}
-                className="group bg-white border border-slate-200/80 overflow-visible flex flex-col shadow-sm hover:shadow-xl transition-all"
+                {...fadeUp}
+                transition={{ ...fadeUp.transition, delay: i * 0.12 }}
+                whileHover={{ y: -8 }}
+                className="group bg-white border border-slate-200/80 overflow-visible flex flex-col shadow-sm hover:shadow-xl transition-shadow"
               >
                 <div className="relative h-64 sm:h-72 md:h-80 overflow-visible bg-slate-900">
                   <div className="w-full h-full overflow-hidden">
@@ -212,38 +227,38 @@ export const HomeView: React.FC<HomeViewProps> = ({ onOpenBooking, onOpenEnquiry
                     </button>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Tours */}
       <section id="tours" className="py-24 px-6 sm:px-10 lg:px-16 xl:px-20 bg-[#0A0E15]">
         <div className="max-w-[1720px] mx-auto">
-          <div className="text-center max-w-2xl mx-auto space-y-3 mb-16">
+          <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto space-y-3 mb-16">
             <span className="text-[10px] font-semibold tracking-[0.25em] uppercase text-[#C5A880]">
               Tailor-Made Itineraries
             </span>
             <h2 className="font-serif-luxury text-3xl sm:text-5xl text-white">
               Private Signature Day Tours
             </h2>
-          </div>
+          </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8">
-            {ICELAND_TOURS.map((tour) => (
-              <div
+            {ICELAND_TOURS.map((tour, i) => (
+              <motion.div
                 key={tour.id}
-                className="group bg-[#0D1219] border border-white/10 overflow-hidden hover:border-[#C5A880]/50 transition-all flex flex-col"
+                {...fadeUp}
+                transition={{ ...fadeUp.transition, delay: i * 0.08 }}
+                whileHover={{ y: -6 }}
+                className="group bg-[#0D1219] border border-white/10 overflow-hidden hover:border-[#C5A880]/50 transition-colors flex flex-col"
               >
                 <div className="relative aspect-[16/10] overflow-hidden">
-                  <div className="w-full h-full overflow-hidden">
-                    <img
-                      src={tour.image}
-                      alt={tour.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                    />
-                  </div>
+                  <img
+                    src={tour.image}
+                    alt={tour.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
                   <div className="absolute bottom-3 left-3 right-3 flex justify-between text-xs">
                     <span className="bg-black/80 text-white px-2.5 py-1 border border-white/10 flex items-center gap-1 font-mono">
                       <Clock className="w-3.5 h-3.5 text-[#C5A880]" />
@@ -271,13 +286,12 @@ export const HomeView: React.FC<HomeViewProps> = ({ onOpenBooking, onOpenEnquiry
                     </button>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Bottom CTA */}
       <section className="relative py-28 px-6 sm:px-10 lg:px-16 xl:px-20 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
@@ -287,13 +301,13 @@ export const HomeView: React.FC<HomeViewProps> = ({ onOpenBooking, onOpenEnquiry
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#080B0E] via-[#080B0E]/60 to-[#080B0E]" />
         </div>
-        <div className="relative z-10 max-w-4xl mx-auto text-center space-y-6">
+        <motion.div {...fadeUp} className="relative z-10 max-w-4xl mx-auto text-center space-y-6">
           <h2 className="font-serif-luxury text-4xl sm:text-5xl font-normal text-white">
             Your Iceland journey, perfectly managed.
           </h2>
-            <p className="text-slate-300 text-xs sm:text-sm font-light max-w-lg mx-auto leading-relaxed">
-              KEF transfers from ${GROUND_FLEET[0].transferRateKEF_USD}. Hourly hire and private tours with live estimates in the booking story.
-            </p>
+          <p className="text-slate-300 text-xs sm:text-sm font-light max-w-lg mx-auto leading-relaxed">
+            KEF transfers from ${GROUND_FLEET[0].transferRateKEF_USD}. Hourly hire and private tours with live estimates in the booking story.
+          </p>
           <div className="flex flex-wrap justify-center gap-4">
             <button
               onClick={() => onOpenBooking()}
@@ -308,7 +322,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onOpenBooking, onOpenEnquiry
               Message concierge
             </button>
           </div>
-        </div>
+        </motion.div>
       </section>
     </div>
   );

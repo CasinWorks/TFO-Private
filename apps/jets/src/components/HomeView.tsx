@@ -3,13 +3,9 @@ import { motion } from 'motion/react';
 import { ArrowDown, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { CONTACT, OFFERINGS, DO_IT_ALL, GALLERY_IMAGES, TEAM, IMAGES, STATS } from '../data/content';
 import { ContactForm } from './ContactForm';
+import { fadeUp as fadeUpPreset, easeLuxury } from '../lib/motion';
 
-const fadeUp = {
-  initial: { opacity: 0, y: 28 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: '-80px' },
-  transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const },
-};
+const fadeUp = fadeUpPreset;
 
 export const HomeView: React.FC = () => {
   const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -22,7 +18,7 @@ export const HomeView: React.FC = () => {
           className="absolute inset-0 z-0"
           initial={{ scale: 1.08 }}
           animate={{ scale: 1 }}
-          transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1.8, ease: easeLuxury }}
         >
           <img
             src={IMAGES.hero}
