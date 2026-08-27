@@ -237,66 +237,6 @@ export const HomeView: React.FC<HomeViewProps> = ({ onOpenBooking, onOpenEnquiry
         </div>
       </section>
 
-      <section id="airport" className="py-24 px-6 sm:px-10 lg:px-16 xl:px-20 bg-[#0C1017] border-y border-white/5">
-        <div className="max-w-[1720px] mx-auto">
-          <motion.div
-            {...fadeUp}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16 items-center"
-          >
-            <div className="relative aspect-[16/11] overflow-hidden">
-              <img
-                src={AIRPORT_TRANSFER.image}
-                alt="Airport transfer with private chauffeur"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0C1017]/80 via-transparent to-transparent" />
-            </div>
-            <div className="space-y-6">
-              <div className="space-y-3">
-                <span className="text-[10px] font-semibold tracking-[0.25em] uppercase text-[#C5A880] block">
-                  {AIRPORT_TRANSFER.subtitle}
-                </span>
-                <h2 className="font-serif-luxury text-3xl sm:text-5xl text-white leading-tight">
-                  {AIRPORT_TRANSFER.title}
-                </h2>
-                <p className="text-sm sm:text-base text-slate-400 font-light leading-relaxed max-w-lg">
-                  {AIRPORT_TRANSFER.description}
-                </p>
-              </div>
-
-              <div className="flex flex-wrap gap-6 text-xs text-slate-300">
-                <span className="inline-flex items-center gap-2">
-                  <PlaneLanding className="w-4 h-4 text-[#C5A880]" />
-                  {AIRPORT_TRANSFER.route}
-                </span>
-                <span className="inline-flex items-center gap-2">
-                  <Users className="w-4 h-4 text-[#C5A880]" />
-                  Up to {AIRPORT_TRANSFER.maxPassengers} passengers
-                </span>
-              </div>
-
-              <div className="pt-2 flex flex-wrap items-end gap-6">
-                <div>
-                  <span className="text-[10px] tracking-[0.2em] uppercase text-slate-500 block mb-1">
-                    Price to / from Reykjavík
-                  </span>
-                  <span className="font-serif-luxury text-3xl text-[#C5A880]">
-                    from {formatMoney(AIRPORT_TRANSFER.fromEUR)}
-                  </span>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => onOpenBooking()}
-                  className="inline-flex items-center gap-2 bg-[#C5A880] hover:bg-[#d6ba94] text-[#080B0E] font-semibold text-xs tracking-[0.2em] uppercase px-7 py-3.5 transition-colors"
-                >
-                  Book transfer <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
       <section id="tours" className="py-24 px-6 sm:px-10 lg:px-16 xl:px-20 bg-[#0A0E15]">
         <div className="max-w-[1720px] mx-auto">
           <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto space-y-3 mb-16">
@@ -309,11 +249,59 @@ export const HomeView: React.FC<HomeViewProps> = ({ onOpenBooking, onOpenEnquiry
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8">
+            <motion.div
+              {...fadeUp}
+              whileHover={{ y: -6 }}
+              className="group bg-[#0D1219] border border-white/10 overflow-hidden hover:border-[#C5A880]/50 transition-colors flex flex-col"
+            >
+              <div className="relative aspect-[16/10] overflow-hidden">
+                <img
+                  src={AIRPORT_TRANSFER.image}
+                  alt={AIRPORT_TRANSFER.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute bottom-3 left-3 right-3 flex justify-between text-xs gap-2">
+                  <span className="bg-black/80 text-white px-2.5 py-1 border border-white/10 flex items-center gap-1 font-mono">
+                    <PlaneLanding className="w-3.5 h-3.5 text-[#C5A880]" />
+                    Transfer
+                  </span>
+                  <span className="bg-black/80 text-[#C5A880] px-2.5 py-1 border border-[#C5A880]/30 font-mono">
+                    up to {AIRPORT_TRANSFER.maxPassengers}
+                  </span>
+                </div>
+              </div>
+              <div className="p-5 space-y-3 flex-1 flex flex-col justify-between">
+                <div>
+                  <span className="text-[10px] tracking-[0.2em] uppercase text-[#C5A880] block mb-1">
+                    {AIRPORT_TRANSFER.subtitle}
+                  </span>
+                  <h3 className="font-serif-luxury text-lg text-white leading-snug mb-2">
+                    {AIRPORT_TRANSFER.title} to/from the Airport
+                  </h3>
+                  <p className="text-[11px] text-slate-400 leading-relaxed line-clamp-4">
+                    {AIRPORT_TRANSFER.description}
+                  </p>
+                </div>
+                <div className="pt-3 border-t border-white/5 flex items-center justify-between gap-3">
+                  <span className="text-sm font-semibold text-[#C5A880]">
+                    from {formatMoney(AIRPORT_TRANSFER.fromEUR)}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => onOpenBooking()}
+                    className="text-[10px] font-semibold uppercase tracking-wider text-slate-300 hover:text-[#C5A880] shrink-0"
+                  >
+                    Book
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+
             {ICELAND_TOURS.map((tour, i) => (
               <motion.div
                 key={tour.id}
                 {...fadeUp}
-                transition={{ ...fadeUp.transition, delay: i * 0.06 }}
+                transition={{ ...fadeUp.transition, delay: (i + 1) * 0.06 }}
                 whileHover={{ y: -6 }}
                 className="group bg-[#0D1219] border border-white/10 overflow-hidden hover:border-[#C5A880]/50 transition-colors flex flex-col"
               >

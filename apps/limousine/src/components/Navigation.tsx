@@ -71,9 +71,6 @@ export const Navigation: React.FC<NavigationProps> = ({
             <button onClick={() => scrollTo('fleet')} className="hover:text-[#C5A880] transition-colors cursor-pointer">
               Fleet
             </button>
-            <button onClick={() => scrollTo('airport')} className="hover:text-[#C5A880] transition-colors cursor-pointer">
-              Airport
-            </button>
             <button onClick={() => scrollTo('tours')} className="hover:text-[#C5A880] transition-colors cursor-pointer">
               Tours
             </button>
@@ -127,9 +124,6 @@ export const Navigation: React.FC<NavigationProps> = ({
           <div className="space-y-6 text-sm tracking-[0.2em] uppercase text-slate-200">
             <button onClick={() => scrollTo('fleet')} className="block w-full text-left hover:text-[#C5A880]">
               Fleet
-            </button>
-            <button onClick={() => scrollTo('airport')} className="block w-full text-left hover:text-[#C5A880]">
-              Airport Transfer
             </button>
             <button onClick={() => scrollTo('tours')} className="block w-full text-left hover:text-[#C5A880]">
               Tours
