@@ -50,7 +50,7 @@ export interface AuthSession {
 
 const SESSION_KEY = 'iceland-limo-staff-session-v1';
 
-/** Seed staff accounts — change passwords before production deploy. */
+/** Seed staff accounts — override via VITE_* env when deploying. */
 export const STAFF_DIRECTORY: StaffUser[] = [
   {
     id: 'owner-1',
@@ -61,10 +61,10 @@ export const STAFF_DIRECTORY: StaffUser[] = [
   },
   {
     id: 'admin-1',
-    email: (import.meta.env.VITE_ADMIN_EMAIL as string) || 'admin@icelandlimousine.com',
+    email: (import.meta.env.VITE_ADMIN_EMAIL as string) || 'admin@admin.com',
     name: 'Operations Admin',
     role: 'admin',
-    password: (import.meta.env.VITE_ADMIN_PASSWORD as string) || 'IcelandAdmin2026!',
+    password: (import.meta.env.VITE_ADMIN_PASSWORD as string) || 'admin',
   },
   {
     id: 'dispatch-1',

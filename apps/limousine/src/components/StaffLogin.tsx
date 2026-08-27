@@ -72,7 +72,7 @@ export const StaffLogin: React.FC<StaffLoginProps> = ({ onSuccess, onCancel }) =
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full bg-[#080B0E] border border-white/15 px-3 py-2.5 text-white outline-none focus:border-[#C5A880]"
-                placeholder="owner@icelandlimousine.com"
+                placeholder="admin@admin.com"
               />
             </div>
             <div className="space-y-1.5">
@@ -114,10 +114,6 @@ export const StaffLogin: React.FC<StaffLoginProps> = ({ onSuccess, onCancel }) =
                 </li>
               ))}
             </ul>
-            <p className="text-[10px] text-slate-600 leading-relaxed pt-1">
-              Demo owner: owner@icelandlimousine.com · Override via VITE_OWNER_EMAIL /
-              VITE_OWNER_PASSWORD.
-            </p>
           </div>
         </div>
       </div>
