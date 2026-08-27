@@ -25,7 +25,7 @@ export const ContactForm: React.FC = () => {
     };
 
     try {
-      const res = await fetch(`https://formsubmit.co/ajax/${CONTACT.email}`, {
+      const res = await fetch(`https://formsubmit.co/ajax/${CONTACT.formEmail}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -34,7 +34,12 @@ export const ContactForm: React.FC = () => {
         body: JSON.stringify(payload),
       });
 
-      if (!res.ok) throw new Error('FormSubmit failed');
+      const data = (await res.json().catch(() => null)) as { success?: string | boolean } | null;
+      const ok =
+        res.ok &&
+        (data?.success === true || data?.success === 'true' || data?.success === undefined);
+
+      if (!ok) throw new Error('FormSubmit failed');
       setSentTo(email);
       setStatus('sent');
       setName('');
@@ -52,7 +57,7 @@ export const ContactForm: React.FC = () => {
         .filter(Boolean)
         .join('\n');
 
-      window.location.href = `mailto:${CONTACT.email}?subject=${encodeURIComponent(
+      window.location.href = `mailto:${CONTACT.formEmail}?subject=${encodeURIComponent(
         `TFO Jets enquiry from ${name}`
       )}&body=${encodeURIComponent(body)}`;
       setSentTo(email);

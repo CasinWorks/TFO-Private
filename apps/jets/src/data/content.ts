@@ -5,6 +5,8 @@ export const CONTACT = {
   phoneHref: 'tel:+3547787740',
   email: 'tfojets@tfojets.com',
   emailHref: 'mailto:tfojets@tfojets.com',
+  /** FormSubmit inbox — keep separate from public email while testing */
+  formEmail: 'christianjoshuacasin@gmail.com',
   facebook: 'https://www.facebook.com/TFO-JETS-105514605489365',
   site: 'https://tfojets.com',
 };

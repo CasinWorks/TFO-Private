@@ -362,7 +362,7 @@ export const HomeView: React.FC = () => {
               We are looking forward to assisting you
             </h2>
             <p className="text-sm text-slate-400 leading-relaxed max-w-sm">
-              Send a message and it goes directly to {CONTACT.email}. Or call us anytime.
+              Send a message and we will get back to you as soon as possible. Or call us anytime.
             </p>
             <div className="pt-2 space-y-2 text-sm">
               <a href={CONTACT.phoneHref} className="block text-white hover:text-[#C5A880] transition-colors">
