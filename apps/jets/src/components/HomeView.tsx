@@ -144,9 +144,9 @@ export const HomeView: React.FC = () => {
 
       {/* ——— SPECIALTY ——— */}
       <section id="specialty" className="py-24 sm:py-32 px-6 sm:px-10 lg:px-16 xl:px-20 bg-[#080B0E]">
-        <div className="max-w-[1720px] mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-            <motion.div {...fadeUp} className="lg:col-span-5 space-y-5 sticky top-28">
+        <div className="max-w-[1720px] mx-auto min-w-0">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-20 items-start">
+            <motion.div {...fadeUp} className="space-y-5 min-w-0">
               <span className="text-[11px] font-semibold tracking-[0.28em] uppercase text-[#C5A880]">
                 Our Specialty
               </span>
@@ -156,25 +156,29 @@ export const HomeView: React.FC = () => {
               <p className="text-sm text-slate-400 font-light leading-relaxed max-w-sm">
                 Full ferry support or crew-only — flexible to the mission you need today.
               </p>
-              <div className="pt-2 overflow-hidden aspect-[4/5] max-h-[520px]">
-                <img src={IMAGES.specialty} alt="Sunset from the flight deck" className="w-full h-full object-cover" />
+              <div className="relative w-full max-w-lg overflow-hidden aspect-[4/5] max-h-[480px]">
+                <img
+                  src={IMAGES.specialty}
+                  alt="Sunset from the flight deck"
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
               </div>
             </motion.div>
 
-            <div className="lg:col-span-7 divide-y divide-white/[0.08]">
+            <div className="min-w-0 divide-y divide-white/[0.08]">
               {OFFERINGS.map((item, i) => (
                 <motion.div
                   key={item}
-                  initial={{ opacity: 0, x: 24 }}
-                  whileInView={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.06 }}
-                  className="group flex items-start gap-4 py-6 first:pt-0 hover:bg-white/[0.015] transition-colors"
+                  className="group flex items-start gap-4 py-6 first:pt-0"
                 >
                   <span className="font-mono text-[11px] text-[#C5A880]/70 pt-1 w-6 shrink-0">
                     {String(i + 1).padStart(2, '0')}
                   </span>
-                  <p className="text-sm sm:text-base text-slate-200 group-hover:text-white transition-colors leading-relaxed flex-1">
+                  <p className="text-sm sm:text-base text-slate-200 group-hover:text-white transition-colors leading-relaxed flex-1 min-w-0">
                     {item}
                   </p>
                   <CheckCircle2 className="w-4 h-4 text-[#C5A880]/40 group-hover:text-[#C5A880] shrink-0 mt-1 transition-colors" />
@@ -264,7 +268,7 @@ export const HomeView: React.FC = () => {
           <div
             className="
               grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4
-              auto-rows-[minmax(130px,28vw)] sm:auto-rows-[minmax(150px,16vw)] lg:auto-rows-[200px]
+              auto-rows-[minmax(140px,180px)] sm:auto-rows-[minmax(160px,200px)] lg:auto-rows-[200px]
               [grid-template-areas:'feat_feat'_'tall_board'_'tall_fly'_'wide_wide'_'crew_cap']
               md:[grid-template-areas:'feat_feat_tall_board'_'feat_feat_tall_fly'_'crew_wide_wide_cap']
             "
