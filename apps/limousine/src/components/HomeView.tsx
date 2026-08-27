@@ -249,59 +249,11 @@ export const HomeView: React.FC<HomeViewProps> = ({ onOpenBooking, onOpenEnquiry
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8">
-            <motion.div
-              {...fadeUp}
-              whileHover={{ y: -6 }}
-              className="group bg-[#0D1219] border border-white/10 overflow-hidden hover:border-[#C5A880]/50 transition-colors flex flex-col"
-            >
-              <div className="relative aspect-[16/10] overflow-hidden">
-                <img
-                  src={AIRPORT_TRANSFER.image}
-                  alt={AIRPORT_TRANSFER.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute bottom-3 left-3 right-3 flex justify-between text-xs gap-2">
-                  <span className="bg-black/80 text-white px-2.5 py-1 border border-white/10 flex items-center gap-1 font-mono">
-                    <PlaneLanding className="w-3.5 h-3.5 text-[#C5A880]" />
-                    Transfer
-                  </span>
-                  <span className="bg-black/80 text-[#C5A880] px-2.5 py-1 border border-[#C5A880]/30 font-mono">
-                    up to {AIRPORT_TRANSFER.maxPassengers}
-                  </span>
-                </div>
-              </div>
-              <div className="p-5 space-y-3 flex-1 flex flex-col justify-between">
-                <div>
-                  <span className="text-[10px] tracking-[0.2em] uppercase text-[#C5A880] block mb-1">
-                    {AIRPORT_TRANSFER.subtitle}
-                  </span>
-                  <h3 className="font-serif-luxury text-lg text-white leading-snug mb-2">
-                    {AIRPORT_TRANSFER.title} to/from the Airport
-                  </h3>
-                  <p className="text-[11px] text-slate-400 leading-relaxed line-clamp-4">
-                    {AIRPORT_TRANSFER.description}
-                  </p>
-                </div>
-                <div className="pt-3 border-t border-white/5 flex items-center justify-between gap-3">
-                  <span className="text-sm font-semibold text-[#C5A880]">
-                    from {formatMoney(AIRPORT_TRANSFER.fromEUR)}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => onOpenBooking()}
-                    className="text-[10px] font-semibold uppercase tracking-wider text-slate-300 hover:text-[#C5A880] shrink-0"
-                  >
-                    Book
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-
             {ICELAND_TOURS.map((tour, i) => (
               <motion.div
                 key={tour.id}
                 {...fadeUp}
-                transition={{ ...fadeUp.transition, delay: (i + 1) * 0.06 }}
+                transition={{ ...fadeUp.transition, delay: i * 0.06 }}
                 whileHover={{ y: -6 }}
                 className="group bg-[#0D1219] border border-white/10 overflow-hidden hover:border-[#C5A880]/50 transition-colors flex flex-col"
               >
@@ -349,6 +301,59 @@ export const HomeView: React.FC<HomeViewProps> = ({ onOpenBooking, onOpenEnquiry
               </motion.div>
             ))}
           </div>
+
+          <motion.div
+            {...fadeUp}
+            whileHover={{ y: -4 }}
+            className="group mt-6 xl:mt-8 bg-[#0D1219] border border-white/10 overflow-hidden hover:border-[#C5A880]/50 transition-colors grid grid-cols-1 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1.2fr)]"
+          >
+            <div className="relative aspect-[16/10] md:aspect-auto md:min-h-[240px] overflow-hidden">
+              <img
+                src={AIRPORT_TRANSFER.image}
+                alt={AIRPORT_TRANSFER.title}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
+              <div className="absolute bottom-3 left-3 right-3 flex justify-between text-xs gap-2">
+                <span className="bg-black/80 text-white px-2.5 py-1 border border-white/10 flex items-center gap-1 font-mono">
+                  <PlaneLanding className="w-3.5 h-3.5 text-[#C5A880]" />
+                  Transfer
+                </span>
+                <span className="bg-black/80 text-[#C5A880] px-2.5 py-1 border border-[#C5A880]/30 font-mono">
+                  up to {AIRPORT_TRANSFER.maxPassengers}
+                </span>
+              </div>
+            </div>
+            <div className="p-6 sm:p-8 flex flex-col justify-between gap-5">
+              <div className="space-y-3">
+                <span className="text-[10px] tracking-[0.2em] uppercase text-[#C5A880] block">
+                  {AIRPORT_TRANSFER.subtitle}
+                </span>
+                <h3 className="font-serif-luxury text-2xl sm:text-3xl text-white leading-snug">
+                  {AIRPORT_TRANSFER.title} to/from the Airport
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-xl">
+                  {AIRPORT_TRANSFER.description}
+                </p>
+              </div>
+              <div className="pt-3 border-t border-white/5 flex flex-wrap items-center justify-between gap-4">
+                <div>
+                  <span className="text-[10px] tracking-[0.18em] uppercase text-slate-500 block mb-1">
+                    To / from Reykjavík
+                  </span>
+                  <span className="text-lg font-semibold text-[#C5A880]">
+                    from {formatMoney(AIRPORT_TRANSFER.fromEUR)}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => onOpenBooking()}
+                  className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#080B0E] bg-[#C5A880] hover:bg-[#d6ba94] px-5 py-3 transition-colors"
+                >
+                  Book <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
