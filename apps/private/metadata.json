@@ -1,0 +1,6 @@
+{
+  "name": "TFO Private - Luxury Aviation & Chauffeur Portal",
+  "description": "Multi-site luxury digital ecosystem integrating TFO Jets and Iceland Limousine into a seamless runway-to-road experience.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

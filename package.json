@@ -1,0 +1,21 @@
+{
+  "name": "tfo-private-monorepo",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:private": "npm run dev -w @tfo/private",
+    "dev:jets": "npm run dev -w @tfo/jets",
+    "dev:limousine": "npm run dev -w @tfo/limousine",
+    "build:private": "npm run build -w @tfo/private",
+    "build:jets": "npm run build -w @tfo/jets",
+    "build:limousine": "npm run build -w @tfo/limousine",
+    "build": "npm run build:private && npm run build:jets && npm run build:limousine",
+    "lint": "npm run lint -w @tfo/private && npm run lint -w @tfo/jets && npm run lint -w @tfo/limousine"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
