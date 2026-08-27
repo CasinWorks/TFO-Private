@@ -60,7 +60,7 @@ export const Navigation: React.FC<NavigationProps> = ({
           ? 'bg-[#080B0E]/95 backdrop-blur-md border-b border-white/10 shadow-2xl py-4' 
           : 'bg-gradient-to-b from-[#080B0E]/90 via-[#080B0E]/40 to-transparent py-5 sm:py-6'
       }`}>
-        <div className="max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 flex items-center justify-between">
+        <div className="site-shell flex items-center justify-between">
           
           <button 
             id="brand-logo-button"

@@ -12,7 +12,8 @@ interface AboutViewProps {
 export const AboutView: React.FC<AboutViewProps> = ({ onOpenEnquiry, onBackHome }) => {
   return (
     <div className="w-full bg-[#080B0E] text-slate-200 pt-28 sm:pt-32 pb-24">
-      <section className="max-w-[1100px] mx-auto px-6 sm:px-10 lg:px-16">
+      <section className="site-shell">
+        <div className="max-w-[1100px]">
         <button
           type="button"
           onClick={onBackHome}
@@ -142,6 +143,7 @@ export const AboutView: React.FC<AboutViewProps> = ({ onOpenEnquiry, onBackHome 
             Book Iceland Limousine
           </a>
         </motion.div>
+        </div>
       </section>
     </div>
   );

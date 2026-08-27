@@ -58,9 +58,9 @@ export const ParentPortalView: React.FC<ParentPortalViewProps> = ({
           <div className="absolute inset-0 bg-gradient-to-b from-[#080B0E]/70 via-transparent to-[#080B0E]/80" />
         </motion.div>
 
-        <div className="relative z-10 max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 w-full my-auto py-12 sm:py-16">
+        <div className="relative z-10 site-shell w-full my-auto py-12 sm:py-16">
           <motion.div
-            className="max-w-2xl space-y-6 sm:space-y-7"
+            className="max-w-2xl xl:max-w-3xl min-[1800px]:max-w-4xl space-y-6 sm:space-y-7"
             variants={staggerContainer}
             initial="hidden"
             animate="show"
@@ -69,13 +69,13 @@ export const ParentPortalView: React.FC<ParentPortalViewProps> = ({
               THE JOURNEY, HANDLED.
             </motion.div>
 
-            <motion.h1 variants={heroReveal} className="font-serif-luxury text-5xl sm:text-6xl md:text-7xl font-normal text-white leading-[1.08] tracking-tight">
+            <motion.h1 variants={heroReveal} className="font-serif-luxury text-5xl sm:text-6xl md:text-7xl min-[1800px]:text-[5.5rem] font-normal text-white leading-[1.08] tracking-tight">
               Private Aviation<br />
               <span className="text-[#C5A880] font-serif-luxury font-light mr-3">&amp;</span>
               <span className="text-white font-serif-luxury font-light">Luxury Travel</span>
             </motion.h1>
 
-            <motion.p variants={heroReveal} className="text-slate-300 text-sm sm:text-base font-light max-w-lg leading-relaxed">
+            <motion.p variants={heroReveal} className="text-slate-300 text-sm sm:text-base min-[1800px]:text-lg font-light max-w-lg min-[1800px]:max-w-xl leading-relaxed">
               From the aircraft to the road, we take care of every detail so you can enjoy the journey.
             </motion.p>
 
@@ -102,13 +102,13 @@ export const ParentPortalView: React.FC<ParentPortalViewProps> = ({
         </div>
 
         <motion.div
-          className="relative z-20 w-full border-t border-white/15 bg-gradient-to-t from-[#080B0E]/90 via-[#080B0E]/40 to-transparent backdrop-blur-[2px] py-10 sm:py-14 px-6 sm:px-10 lg:px-16 xl:px-20"
+          className="relative z-20 w-full border-t border-white/15 bg-gradient-to-t from-[#080B0E]/90 via-[#080B0E]/40 to-transparent backdrop-blur-[2px] py-10 sm:py-14"
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: '-40px' }}
           variants={staggerContainer}
         >
-          <div className="max-w-[1720px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-white/15">
+          <div className="site-shell grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-white/15">
             {[
               { icon: Globe, title: 'Worldwide Operations', body: 'Aviation services and luxury travel, wherever you need us.' },
               { icon: User, title: 'Personal Service', body: 'A dedicated team, available 24/7 to support your journey.' },
@@ -136,8 +136,8 @@ export const ParentPortalView: React.FC<ParentPortalViewProps> = ({
       </section>
 
       {/* 3. TWO SPECIALIST DIVISIONS SECTION (CRISP LIGHT OFF-WHITE BACKGROUND) */}
-      <section className="py-24 px-6 sm:px-10 lg:px-16 xl:px-20 bg-[#F6F7F9] text-[#1A202C]">
-        <div className="max-w-[1720px] mx-auto">
+      <section className="py-24 sm:py-28 bg-[#F6F7F9] text-[#1A202C]">
+        <div className="site-shell">
           
           <motion.div {...fadeUp} className="text-center max-w-3xl mx-auto space-y-3 mb-16">
             <span className="text-[11px] font-sans font-semibold tracking-[0.25em] uppercase text-[#C5A880] block">
@@ -247,8 +247,8 @@ export const ParentPortalView: React.FC<ParentPortalViewProps> = ({
       </section>
 
       {/* 4. "JOURNEYS DESIGNED AROUND YOU" 4-CARD FEATURE MATRIX (DARK BACKGROUND) */}
-      <section id="journeys-section" className="py-24 px-6 sm:px-10 lg:px-16 xl:px-20 bg-[#080B0E]">
-        <div className="max-w-[1720px] w-full mx-auto">
+      <section id="journeys-section" className="py-24 sm:py-28 bg-[#080B0E]">
+        <div className="site-shell">
           
           <motion.div {...fadeUp} className="text-center max-w-3xl mx-auto space-y-3 mb-16 sm:mb-20">
             <span className="text-[11px] sm:text-xs font-sans font-semibold tracking-[0.25em] uppercase text-[#C5A880]">
@@ -383,7 +383,7 @@ export const ParentPortalView: React.FC<ParentPortalViewProps> = ({
       </section>
 
       {/* 5. BOTTOM CALL-TO-ACTION (Exact 1:1 Match to Mockup) */}
-      <section className="relative py-28 px-6 sm:px-10 lg:px-16 xl:px-20 overflow-hidden">
+      <section className="relative py-28 overflow-hidden">
         {/* Dark Icelandic Horizon Background Image */}
         <div className="absolute inset-0 z-0">
           <img 
@@ -394,7 +394,8 @@ export const ParentPortalView: React.FC<ParentPortalViewProps> = ({
           <div className="absolute inset-0 bg-gradient-to-t from-[#080B0E] via-[#080B0E]/60 to-[#080B0E]" />
         </div>
 
-        <div className="relative z-10 max-w-4xl mx-auto text-center space-y-6">
+        <div className="relative z-10 site-shell">
+          <div className="max-w-4xl mx-auto text-center space-y-6">
           <h2 className="font-serif-luxury text-4xl sm:text-5xl font-normal text-white">
             Your journey, perfectly managed.
           </h2>
@@ -411,6 +412,7 @@ export const ParentPortalView: React.FC<ParentPortalViewProps> = ({
               <span>ENQUIRE NOW</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
+          </div>
           </div>
         </div>
       </section>
