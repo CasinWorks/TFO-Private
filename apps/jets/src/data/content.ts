@@ -46,7 +46,7 @@ export const TEAM = [
     name: 'Tryggvi Forberg',
     role: 'Founder and Chief Pilot',
     email: 'tryggvi@tfojets.com',
-    image: '/team/Tryggvi-3-200x300.jpg',
+    image: '/team/Tryggvi-portrait.jpg',
     bio: '22 years in aviation. EASA, FAA, HK, PNG and CAA. Types flown: B737, 757, 767, A320 and G450. SFI previous experience as a flight instructor at FlightSafety International. Airline and business aviation crew.',
   },
   {
