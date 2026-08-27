@@ -368,6 +368,11 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
                   >
                     <div className="font-serif-luxury text-xl text-white">{s.title}</div>
                     <div className="text-xs text-slate-400 mt-1">{s.blurb}</div>
+                    {s.id === 'airport_transfer' && (
+                      <p className="text-[11px] text-slate-500 mt-2 leading-relaxed">
+                        {AIRPORT_TRANSFER.description}
+                      </p>
+                    )}
                   </motion.button>
                 ))}
               </div>

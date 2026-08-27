@@ -110,8 +110,8 @@ export const HomeView: React.FC<HomeViewProps> = ({ onOpenBooking, onOpenEnquiry
             {[
               {
                 icon: PlaneLanding,
-                title: 'KEF & FBO Transfers',
-                body: 'Meet & greet at Keflavík International or private FBO — seamless VIP arrival.',
+                title: 'Airport Transfer',
+                body: 'To/from the airport with comfort and style — private chauffeur. From €200, up to 4 passengers.',
               },
               {
                 icon: Car,
@@ -237,6 +237,66 @@ export const HomeView: React.FC<HomeViewProps> = ({ onOpenBooking, onOpenEnquiry
         </div>
       </section>
 
+      <section id="airport" className="py-24 px-6 sm:px-10 lg:px-16 xl:px-20 bg-[#0C1017] border-y border-white/5">
+        <div className="max-w-[1720px] mx-auto">
+          <motion.div
+            {...fadeUp}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16 items-center"
+          >
+            <div className="relative aspect-[16/11] overflow-hidden">
+              <img
+                src={AIRPORT_TRANSFER.image}
+                alt="Airport transfer with private chauffeur"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0C1017]/80 via-transparent to-transparent" />
+            </div>
+            <div className="space-y-6">
+              <div className="space-y-3">
+                <span className="text-[10px] font-semibold tracking-[0.25em] uppercase text-[#C5A880] block">
+                  {AIRPORT_TRANSFER.subtitle}
+                </span>
+                <h2 className="font-serif-luxury text-3xl sm:text-5xl text-white leading-tight">
+                  {AIRPORT_TRANSFER.title}
+                </h2>
+                <p className="text-sm sm:text-base text-slate-400 font-light leading-relaxed max-w-lg">
+                  {AIRPORT_TRANSFER.description}
+                </p>
+              </div>
+
+              <div className="flex flex-wrap gap-6 text-xs text-slate-300">
+                <span className="inline-flex items-center gap-2">
+                  <PlaneLanding className="w-4 h-4 text-[#C5A880]" />
+                  {AIRPORT_TRANSFER.route}
+                </span>
+                <span className="inline-flex items-center gap-2">
+                  <Users className="w-4 h-4 text-[#C5A880]" />
+                  Up to {AIRPORT_TRANSFER.maxPassengers} passengers
+                </span>
+              </div>
+
+              <div className="pt-2 flex flex-wrap items-end gap-6">
+                <div>
+                  <span className="text-[10px] tracking-[0.2em] uppercase text-slate-500 block mb-1">
+                    Price to / from Reykjavík
+                  </span>
+                  <span className="font-serif-luxury text-3xl text-[#C5A880]">
+                    from {formatMoney(AIRPORT_TRANSFER.fromEUR)}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => onOpenBooking()}
+                  className="inline-flex items-center gap-2 bg-[#C5A880] hover:bg-[#d6ba94] text-[#080B0E] font-semibold text-xs tracking-[0.2em] uppercase px-7 py-3.5 transition-colors"
+                >
+                  Book transfer <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       <section id="tours" className="py-24 px-6 sm:px-10 lg:px-16 xl:px-20 bg-[#0A0E15]">
         <div className="max-w-[1720px] mx-auto">
           <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto space-y-3 mb-16">
@@ -318,8 +378,8 @@ export const HomeView: React.FC<HomeViewProps> = ({ onOpenBooking, onOpenEnquiry
             Your Iceland journey, perfectly managed.
           </h2>
           <p className="text-slate-300 text-xs sm:text-sm font-light max-w-lg mx-auto leading-relaxed">
-            Airport transfers from {formatMoney(AIRPORT_TRANSFER.fromEUR)} (up to {AIRPORT_TRANSFER.maxPassengers} passengers).
-            Private day tours and wedding chauffeur with live estimates in the booking story.
+            Airport transfers from {formatMoney(AIRPORT_TRANSFER.fromEUR)} (up to {AIRPORT_TRANSFER.maxPassengers}{' '}
+            passengers). Private day tours and wedding chauffeur with live estimates in the booking story.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <motion.button

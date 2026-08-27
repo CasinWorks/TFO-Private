@@ -207,11 +207,14 @@ export function formatMoney(amount: number, currency: OfferCurrency = 'EUR') {
   return `€${amount.toLocaleString('en-US')}`;
 }
 
-/** Airport transfer copy — from €200, up to 4 passengers */
+/** Airport transfer — to/from KEF · from €200 · up to 4 passengers */
 export const AIRPORT_TRANSFER = {
   title: 'Airport Transfer',
-  blurb: 'To/from the airport with comfort and style — private chauffeur.',
+  subtitle: 'To / from the airport',
+  description:
+    'Do you want to enter the country with comfort and style, and leave it in that way also? Rent a car with a private chauffeur.',
   fromEUR: 200,
   maxPassengers: 4,
   route: 'KEF ↔ Reykjavík',
+  image: '/fleet/volvo-xc90.jpg',
 };
