@@ -39,6 +39,39 @@
   font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
+/* Fluid page shell — scales padding on ultrawide instead of a hard 1720 cap */
+.site-shell {
+  width: 100%;
+  max-width: min(100%, 2400px);
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 3.5vw, 4rem);
+}
+
+@media (min-width: 1600px) {
+  .site-shell {
+    padding-inline: clamp(2rem, 5vw, 6rem);
+  }
+}
+
+@media (min-width: 2000px) {
+  .site-shell {
+    max-width: min(100%, 2800px);
+    padding-inline: clamp(3rem, 7vw, 9rem);
+  }
+}
+
+.site-shell-flush {
+  width: 100%;
+  max-width: min(100%, 2400px);
+  margin-inline: auto;
+}
+
+@media (min-width: 2000px) {
+  .site-shell-flush {
+    max-width: min(100%, 2800px);
+  }
+}
+
 /* Custom Gold and Basalt Gradient Accents */
 .gold-glow {
   box-shadow: 0 0 35px -10px rgba(197, 168, 128, 0.25);
