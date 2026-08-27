@@ -307,7 +307,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onOpenBooking, onOpenEnquiry
       <section className="relative py-28 px-6 sm:px-10 lg:px-16 xl:px-20 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1504893524553-b855bce32c67?auto=format&fit=crop&w=2200&q=80"
+            src="/tours/golden-circle.jpg"
             alt="Iceland landscape"
             className="w-full h-full object-cover brightness-50"
           />
