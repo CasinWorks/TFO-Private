@@ -55,18 +55,65 @@ export const heroReveal: Variants = {
 };
 
 export const pageSlide: Variants = {
-  enter: { opacity: 0, x: 28, filter: 'blur(4px)' },
+  enter: (dir: number) => ({
+    opacity: 0,
+    x: dir >= 0 ? 36 : -36,
+    y: 12,
+    filter: 'blur(6px)',
+  }),
   center: {
     opacity: 1,
     x: 0,
+    y: 0,
     filter: 'blur(0px)',
-    transition: { duration: 0.55, ease: easeLuxury },
+    transition: { duration: 0.6, ease: easeLuxury },
+  },
+  exit: (dir: number) => ({
+    opacity: 0,
+    x: dir >= 0 ? -28 : 28,
+    y: -8,
+    filter: 'blur(6px)',
+    transition: { duration: 0.35, ease: easeLuxury },
+  }),
+};
+
+/** Full-screen booking portal open/close — cinematic curtain feel */
+export const bookingPortal: Variants = {
+  hidden: {
+    opacity: 0,
+    clipPath: 'inset(50% 0 50% 0)',
+  },
+  show: {
+    opacity: 1,
+    clipPath: 'inset(0% 0 0% 0)',
+    transition: {
+      clipPath: { duration: 0.85, ease: easeLuxury },
+      opacity: { duration: 0.45 },
+    },
   },
   exit: {
     opacity: 0,
-    x: -20,
-    filter: 'blur(4px)',
-    transition: { duration: 0.35, ease: easeLuxury },
+    clipPath: 'inset(50% 0 50% 0)',
+    transition: {
+      clipPath: { duration: 0.55, ease: easeLuxury },
+      opacity: { duration: 0.4, delay: 0.05 },
+    },
+  },
+};
+
+export const stepStagger: Variants = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.07, delayChildren: 0.12 },
+  },
+};
+
+export const stepChild: Variants = {
+  hidden: { opacity: 0, y: 22 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: easeLuxury },
   },
 };
 

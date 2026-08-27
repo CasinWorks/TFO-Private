@@ -3,7 +3,11 @@ import { Phone, Mail, ExternalLink } from 'lucide-react';
 import { SITES } from '../config/sites';
 import { CONTACT, IMAGES } from '../data/content';
 
-export const Footer: React.FC = () => {
+interface FooterProps {
+  onOpenAbout?: () => void;
+}
+
+export const Footer: React.FC<FooterProps> = ({ onOpenAbout }) => {
   return (
     <footer className="bg-[#05070A] border-t border-white/8 text-slate-400">
       <div className="max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 py-14">
@@ -20,21 +24,35 @@ export const Footer: React.FC = () => {
               className="inline-flex items-center bg-white rounded-sm px-2 py-1.5 hover:opacity-90 transition-opacity"
               aria-label="Member of NBAA — National Business Aviation Association"
             >
-              <img
-                src={IMAGES.nbaa}
-                alt="Member of NBAA"
-                className="h-11 w-auto"
-              />
+              <img src={IMAGES.nbaa} alt="Member of NBAA" className="h-11 w-auto" />
             </a>
           </div>
           <div className="flex flex-wrap gap-x-8 gap-y-3 text-xs">
-            <a href={CONTACT.phoneHref} className="inline-flex items-center gap-2 hover:text-[#C5A880] transition-colors">
+            {onOpenAbout && (
+              <button
+                type="button"
+                onClick={onOpenAbout}
+                className="inline-flex items-center gap-2 hover:text-[#C5A880] transition-colors"
+              >
+                About Us
+              </button>
+            )}
+            <a
+              href={CONTACT.phoneHref}
+              className="inline-flex items-center gap-2 hover:text-[#C5A880] transition-colors"
+            >
               <Phone className="w-3.5 h-3.5 text-[#C5A880]" /> {CONTACT.phone}
             </a>
-            <a href={CONTACT.emailHref} className="inline-flex items-center gap-2 hover:text-[#C5A880] transition-colors">
+            <a
+              href={CONTACT.emailHref}
+              className="inline-flex items-center gap-2 hover:text-[#C5A880] transition-colors"
+            >
               <Mail className="w-3.5 h-3.5 text-[#C5A880]" /> {CONTACT.email}
             </a>
-            <a href={SITES.parent} className="inline-flex items-center gap-2 hover:text-[#C5A880] transition-colors">
+            <a
+              href={SITES.parent}
+              className="inline-flex items-center gap-2 hover:text-[#C5A880] transition-colors"
+            >
               <ExternalLink className="w-3.5 h-3.5 text-[#C5A880]" /> TFO Private
             </a>
           </div>

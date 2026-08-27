@@ -3,19 +3,23 @@ import { Menu, X, ExternalLink, Lock } from 'lucide-react';
 import { SITES } from '../config/sites';
 
 interface NavigationProps {
+  activeView?: 'home' | 'about';
   onOpenBooking: () => void;
   onOpenEnquiry: (topic?: string) => void;
   onOpenStaff: () => void;
   staffSignedIn: boolean;
   onGoHome: () => void;
+  onOpenAbout: () => void;
 }
 
 export const Navigation: React.FC<NavigationProps> = ({
+  activeView = 'home',
   onOpenBooking,
   onOpenEnquiry,
   onOpenStaff,
   staffSignedIn,
   onGoHome,
+  onOpenAbout,
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -73,6 +77,17 @@ export const Navigation: React.FC<NavigationProps> = ({
             <button onClick={() => scrollTo('services')} className="hover:text-[#C5A880] transition-colors cursor-pointer">
               Services
             </button>
+            <button
+              onClick={() => {
+                setMobileOpen(false);
+                onOpenAbout();
+              }}
+              className={`hover:text-[#C5A880] transition-colors cursor-pointer ${
+                activeView === 'about' ? 'text-[#C5A880]' : ''
+              }`}
+            >
+              About
+            </button>
             <a href={SITES.parent} className="hover:text-[#C5A880] transition-colors inline-flex items-center gap-1.5">
               TFO Private <ExternalLink className="w-3 h-3 opacity-60" />
             </a>
@@ -115,6 +130,15 @@ export const Navigation: React.FC<NavigationProps> = ({
             </button>
             <button onClick={() => scrollTo('services')} className="block w-full text-left hover:text-[#C5A880]">
               Services
+            </button>
+            <button
+              onClick={() => {
+                setMobileOpen(false);
+                onOpenAbout();
+              }}
+              className="block w-full text-left hover:text-[#C5A880]"
+            >
+              About Us
             </button>
             <button
               onClick={() => {

@@ -63,6 +63,18 @@ export const Footer: React.FC<FooterProps> = ({ setActiveDivision, onOpenEnquiry
                 </button>
               </li>
               <li>
+                <button
+                  onClick={() => {
+                    setActiveDivision('about');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="hover:text-[#C5A880] transition-colors flex items-center gap-2"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#C5A880]"></span>
+                  About Us
+                </button>
+              </li>
+              <li>
                 <a
                   href={SITES.limousine}
                   className="hover:text-[#C5A880] transition-colors flex items-center gap-2"

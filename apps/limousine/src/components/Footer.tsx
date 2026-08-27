@@ -6,9 +6,15 @@ interface FooterProps {
   onOpenBooking: () => void;
   onOpenEnquiry: (topic?: string) => void;
   onOpenStaff: () => void;
+  onOpenAbout: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onOpenBooking, onOpenEnquiry, onOpenStaff }) => {
+export const Footer: React.FC<FooterProps> = ({
+  onOpenBooking,
+  onOpenEnquiry,
+  onOpenStaff,
+  onOpenAbout,
+}) => {
   return (
     <footer className="bg-[#05070A] border-t border-white/10 text-slate-400 text-sm">
       <div className="max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 py-14">
@@ -36,6 +42,11 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking, onOpenEnquiry, on
               Book &amp; contact
             </h3>
             <ul className="space-y-2 text-xs">
+              <li>
+                <button onClick={onOpenAbout} className="hover:text-[#C5A880]">
+                  About Us
+                </button>
+              </li>
               <li>
                 <button onClick={onOpenBooking} className="hover:text-[#C5A880]">
                   Story booking

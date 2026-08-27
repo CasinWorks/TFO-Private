@@ -3,6 +3,7 @@ import { AnimatePresence } from 'motion/react';
 import { Navigation } from './components/Navigation';
 import { Footer } from './components/Footer';
 import { HomeView } from './components/HomeView';
+import { AboutView } from './components/AboutView';
 import { StoryBooking } from './components/StoryBooking';
 import { InquiriesDashboard } from './components/InquiriesDashboard';
 import { StaffLogin } from './components/StaffLogin';
@@ -14,10 +15,11 @@ import {
   type AuthSession,
 } from './lib/auth';
 
-type View = 'home' | 'staff-login' | 'inquiries';
+type View = 'home' | 'about' | 'staff-login' | 'inquiries';
 
 function pathToView(session: AuthSession | null): View {
   const hash = window.location.hash.replace(/^#\/?/, '');
+  if (hash === 'about') return 'about';
   if (hash === 'inquiries' || hash === 'owner' || hash === 'staff') {
     if (session && canAccessInquiries(session.role)) return 'inquiries';
     return 'staff-login';
@@ -78,6 +80,12 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const goAbout = () => {
+    setView('about');
+    window.location.hash = '#/about';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleLoginSuccess = (next: AuthSession) => {
     setSession(next);
     setView('inquiries');
@@ -92,12 +100,13 @@ export default function App() {
     window.location.hash = '#/staff';
   };
 
-  const showChrome = view === 'home';
+  const showChrome = view === 'home' || view === 'about';
 
   return (
     <div className="min-h-screen bg-[#080B0E] text-[#F3F4F6] flex flex-col justify-between selection:bg-[#C5A880] selection:text-[#080B0E]">
       {showChrome && (
         <Navigation
+          activeView={view === 'about' ? 'about' : 'home'}
           onOpenBooking={() => openBooking()}
           onOpenEnquiry={(topic) => {
             setEnquiryTopic(topic || 'Iceland Limousine Concierge');
@@ -106,6 +115,7 @@ export default function App() {
           onOpenStaff={goStaffArea}
           staffSignedIn={Boolean(session && canAccessInquiries(session.role))}
           onGoHome={goHome}
+          onOpenAbout={goAbout}
         />
       )}
 
@@ -117,6 +127,16 @@ export default function App() {
               setEnquiryTopic(topic || 'Iceland Limousine Concierge');
               setEnquiryOpen(true);
             }}
+          />
+        )}
+        {view === 'about' && (
+          <AboutView
+            onOpenBooking={() => openBooking()}
+            onOpenEnquiry={(topic) => {
+              setEnquiryTopic(topic || 'Iceland Limousine Concierge');
+              setEnquiryOpen(true);
+            }}
+            onBackHome={goHome}
           />
         )}
         {view === 'staff-login' && (
@@ -139,6 +159,7 @@ export default function App() {
             setEnquiryOpen(true);
           }}
           onOpenStaff={goStaffArea}
+          onOpenAbout={goAbout}
         />
       )}
 

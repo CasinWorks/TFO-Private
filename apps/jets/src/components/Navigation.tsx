@@ -9,7 +9,19 @@ const LINKS = [
   { id: 'team', label: 'Our Team' },
 ] as const;
 
-export const Navigation: React.FC = () => {
+interface NavigationProps {
+  activeView?: 'home' | 'about';
+  onGoHome: () => void;
+  onOpenAbout: () => void;
+  onOpenContact: () => void;
+}
+
+export const Navigation: React.FC<NavigationProps> = ({
+  activeView = 'home',
+  onGoHome,
+  onOpenAbout,
+  onOpenContact,
+}) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -28,6 +40,13 @@ export const Navigation: React.FC = () => {
 
   const scrollTo = (id: string) => {
     setMobileOpen(false);
+    if (activeView !== 'home') {
+      onGoHome();
+      setTimeout(() => {
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+      }, 80);
+      return;
+    }
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
@@ -41,7 +60,14 @@ export const Navigation: React.FC = () => {
         }`}
       >
         <div className="max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 flex items-center justify-between">
-          <button onClick={() => scrollTo('home')} className="text-left cursor-pointer group">
+          <button
+            type="button"
+            onClick={() => {
+              setMobileOpen(false);
+              onGoHome();
+            }}
+            className="text-left cursor-pointer group"
+          >
             <span className="font-serif-luxury text-2xl sm:text-[1.75rem] font-semibold tracking-[0.18em] text-white leading-none group-hover:text-[#C5A880] transition-colors">
               TFO
             </span>
@@ -54,22 +80,40 @@ export const Navigation: React.FC = () => {
             {LINKS.map((link) => (
               <button
                 key={link.id}
+                type="button"
                 onClick={() => scrollTo(link.id)}
                 className="relative hover:text-white transition-colors cursor-pointer after:absolute after:left-0 after:-bottom-1 after:h-px after:w-0 after:bg-[#C5A880] hover:after:w-full after:transition-all after:duration-300"
               >
                 {link.label}
               </button>
             ))}
+            <button
+              type="button"
+              onClick={() => {
+                setMobileOpen(false);
+                onOpenAbout();
+              }}
+              className={`relative hover:text-white transition-colors cursor-pointer after:absolute after:left-0 after:-bottom-1 after:h-px after:bg-[#C5A880] after:transition-all after:duration-300 ${
+                activeView === 'about' ? 'text-[#C5A880] after:w-full' : 'after:w-0 hover:after:w-full'
+              }`}
+            >
+              About
+            </button>
           </nav>
 
           <div className="flex items-center gap-3">
             <button
-              onClick={() => scrollTo('contact')}
+              type="button"
+              onClick={() => {
+                setMobileOpen(false);
+                onOpenContact();
+              }}
               className="hidden sm:inline-flex bg-[#C5A880] hover:bg-[#d6ba94] text-[#080B0E] font-semibold text-[11px] tracking-[0.2em] uppercase px-5 py-2.5 transition-colors cursor-pointer"
             >
               Contact
             </button>
             <button
+              type="button"
               onClick={() => setMobileOpen(!mobileOpen)}
               className="md:hidden text-white p-1.5"
               aria-label="Menu"
@@ -92,6 +136,7 @@ export const Navigation: React.FC = () => {
               {LINKS.map((link, i) => (
                 <motion.button
                   key={link.id}
+                  type="button"
                   initial={{ opacity: 0, x: -12 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.05 * i }}
@@ -101,8 +146,25 @@ export const Navigation: React.FC = () => {
                   {link.label}
                 </motion.button>
               ))}
+              <motion.button
+                type="button"
+                initial={{ opacity: 0, x: -12 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.05 * LINKS.length }}
+                onClick={() => {
+                  setMobileOpen(false);
+                  onOpenAbout();
+                }}
+                className="block w-full text-left hover:text-[#C5A880] text-xl font-serif-luxury tracking-normal normal-case"
+              >
+                About Us
+              </motion.button>
               <button
-                onClick={() => scrollTo('contact')}
+                type="button"
+                onClick={() => {
+                  setMobileOpen(false);
+                  onOpenContact();
+                }}
                 className="inline-flex mt-4 bg-[#C5A880] text-[#080B0E] font-semibold tracking-[0.2em] uppercase px-6 py-3"
               >
                 Contact us

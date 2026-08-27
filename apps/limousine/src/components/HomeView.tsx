@@ -64,12 +64,16 @@ export const HomeView: React.FC<HomeViewProps> = ({ onOpenBooking, onOpenEnquiry
               Volvo XC90 (up to 6 passengers) and Toyota Land Cruiser 150 VX (up to 4 passengers).
             </motion.p>
             <motion.div variants={heroReveal} className="pt-2 flex flex-wrap items-center gap-4">
-              <button
+              <motion.button
+                type="button"
                 onClick={() => onOpenBooking()}
-                className="inline-flex items-center gap-2.5 bg-[#C5A880] hover:bg-[#d6ba94] text-[#080B0E] font-semibold text-xs tracking-[0.18em] uppercase px-6 sm:px-7 py-3.5 transition-all shadow-xl cursor-pointer"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                transition={{ duration: 0.25, ease: easeLuxury }}
+                className="inline-flex items-center gap-2.5 bg-[#C5A880] hover:bg-[#d6ba94] text-[#080B0E] font-semibold text-xs tracking-[0.18em] uppercase px-6 sm:px-7 py-3.5 shadow-xl cursor-pointer"
               >
                 Book Now <ArrowRight className="w-3.5 h-3.5" />
-              </button>
+              </motion.button>
               <button
                 onClick={scrollToFleet}
                 className="inline-flex items-center gap-2.5 bg-black/40 hover:bg-black/70 text-white border border-white/40 font-semibold text-xs tracking-[0.18em] uppercase px-6 sm:px-7 py-3.5 backdrop-blur-sm transition-all cursor-pointer"
@@ -309,12 +313,16 @@ export const HomeView: React.FC<HomeViewProps> = ({ onOpenBooking, onOpenEnquiry
             KEF transfers from ${GROUND_FLEET[0].transferRateKEF_USD}. Hourly hire and private tours with live estimates in the booking story.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <button
+            <motion.button
+              type="button"
               onClick={() => onOpenBooking()}
-              className="inline-flex items-center gap-2.5 bg-[#C5A880] hover:bg-[#d6ba94] text-[#080B0E] font-semibold text-xs tracking-[0.2em] uppercase px-8 py-4 transition-all shadow-xl cursor-pointer"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ duration: 0.25, ease: easeLuxury }}
+              className="inline-flex items-center gap-2.5 bg-[#C5A880] hover:bg-[#d6ba94] text-[#080B0E] font-semibold text-xs tracking-[0.2em] uppercase px-8 py-4 shadow-xl cursor-pointer"
             >
               Start booking <ArrowRight className="w-3.5 h-3.5" />
-            </button>
+            </motion.button>
             <button
               onClick={() => onOpenEnquiry('Iceland Limousine Concierge')}
               className="inline-flex items-center gap-2.5 border border-white/30 hover:border-[#C5A880] text-white font-semibold text-xs tracking-[0.2em] uppercase px-8 py-4 transition-all cursor-pointer"

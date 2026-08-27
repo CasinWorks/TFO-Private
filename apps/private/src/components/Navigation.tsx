@@ -257,7 +257,17 @@ export const Navigation: React.FC<NavigationProps> = ({
             </div>
 
             <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4 flex-wrap justify-center">
+                <button
+                  onClick={() => {
+                    setActiveDivision('about');
+                    setMobileMenuOpen(false);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="hover:text-[#C5A880] uppercase tracking-[0.2em]"
+                >
+                  About Us
+                </button>
                 <span className="flex items-center gap-1.5"><Phone className="w-3.5 h-3.5 text-[#C5A880]" /> +354 588 5522</span>
                 <span className="flex items-center gap-1.5"><Mail className="w-3.5 h-3.5 text-[#C5A880]" /> concierge@tfoprivate.com</span>
               </div>

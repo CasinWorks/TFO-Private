@@ -14,6 +14,7 @@ export const AboutView: React.FC<AboutViewProps> = ({ onOpenEnquiry, onBackHome 
     <div className="w-full bg-[#080B0E] text-slate-200 pt-28 sm:pt-32 pb-24">
       <section className="max-w-[1100px] mx-auto px-6 sm:px-10 lg:px-16">
         <button
+          type="button"
           onClick={onBackHome}
           className="text-[11px] tracking-[0.22em] uppercase text-slate-500 hover:text-[#C5A880] mb-10 transition-colors"
         >
@@ -21,23 +22,41 @@ export const AboutView: React.FC<AboutViewProps> = ({ onOpenEnquiry, onBackHome 
         </button>
 
         <motion.div
-          className="space-y-5 mb-16 sm:mb-20"
+          className="space-y-5 mb-14 sm:mb-16"
           variants={staggerContainer}
           initial="hidden"
           animate="show"
         >
-          <motion.span variants={heroReveal} className="block text-[11px] font-semibold tracking-[0.28em] uppercase text-[#C5A880]">
-            About TFO Private
+          <motion.span
+            variants={heroReveal}
+            className="block text-[11px] font-semibold tracking-[0.28em] uppercase text-[#C5A880]"
+          >
+            About Us
           </motion.span>
-          <motion.h1 variants={heroReveal} className="font-serif-luxury text-4xl sm:text-5xl md:text-6xl text-white leading-[1.08]">
+          <motion.h1
+            variants={heroReveal}
+            className="font-serif-luxury text-4xl sm:text-5xl md:text-6xl text-white leading-[1.08]"
+          >
             One standard.<br />
             <span className="text-[#C5A880] font-light">Two specialist houses.</span>
           </motion.h1>
-          <motion.p variants={heroReveal} className="text-slate-400 text-sm sm:text-base font-light leading-relaxed max-w-2xl">
+        </motion.div>
+
+        <motion.div
+          {...fadeUp}
+          className="max-w-3xl space-y-6 text-slate-300 text-sm sm:text-base font-light leading-relaxed mb-16"
+        >
+          <p>
             TFO Private is the umbrella for discreet private aviation and luxury ground transport.
-            We connect runway to road under one concierge standard — without mixing the brands into
-            a single booking form.
-          </motion.p>
+            Operated by Tryggvi and Petur, we connect runway to road under one concierge standard —
+            without mixing the brands into a single booking form.
+          </p>
+          <p>
+            Through TFO Jets we deliver ferry flights, crew dispatch, and oceanic planning worldwide.
+            Through Iceland Limousine we offer licenced, customized transfers and daytrips from 2 –
+            16 hours — driven and escorted by Icelandic driver-guides in vehicles suited to the
+            terrain you will explore.
+          </p>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
@@ -54,7 +73,8 @@ export const AboutView: React.FC<AboutViewProps> = ({ onOpenEnquiry, onBackHome 
               Airbus operators worldwide.
             </p>
             <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-[#C5A880] font-semibold">
-              Visit aviation site <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+              Visit aviation site{' '}
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </span>
           </motion.a>
 
@@ -68,16 +88,20 @@ export const AboutView: React.FC<AboutViewProps> = ({ onOpenEnquiry, onBackHome 
             <Car className="w-6 h-6 text-[#C5A880] mb-5" />
             <h2 className="font-serif-luxury text-2xl text-white mb-3">Iceland Limousine</h2>
             <p className="text-sm text-slate-400 leading-relaxed mb-6">
-              Private chauffeur, KEF transfers, and signature day tours with our Volvo XC90 and
-              Toyota Land Cruiser 150 VX — priced and bookable on the ground site.
+              Customized transfers and daytrips for layover, business, and cruise guests — with
+              Icelandic driver-guides and terrain-ready vehicles.
             </p>
             <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-[#C5A880] font-semibold">
-              Visit ground site <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+              Visit ground site{' '}
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </span>
           </motion.a>
         </div>
 
-        <motion.div {...fadeUp} className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-16 border-y border-white/10 py-12">
+        <motion.div
+          {...fadeUp}
+          className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-16 border-y border-white/10 py-12"
+        >
           {[
             {
               icon: ShieldCheck,
@@ -92,7 +116,7 @@ export const AboutView: React.FC<AboutViewProps> = ({ onOpenEnquiry, onBackHome 
             {
               icon: Users,
               title: 'Human concierge',
-              body: 'Real specialists on duty — not a ticket queue. We coordinate aviation and ground as one journey when you need both.',
+              body: 'Real specialists on duty — we coordinate aviation and ground as one journey when you need both.',
             },
           ].map((item) => (
             <div key={item.title} className="space-y-3">
@@ -105,6 +129,7 @@ export const AboutView: React.FC<AboutViewProps> = ({ onOpenEnquiry, onBackHome 
 
         <motion.div {...fadeUp} className="flex flex-wrap gap-4">
           <button
+            type="button"
             onClick={() => onOpenEnquiry('General Contact')}
             className="bg-[#C5A880] hover:bg-[#d6ba94] text-[#080B0E] font-semibold text-xs tracking-[0.2em] uppercase px-7 py-3.5 transition-all"
           >

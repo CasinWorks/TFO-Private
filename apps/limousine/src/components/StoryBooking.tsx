@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { GROUND_FLEET, ICELAND_TOURS } from '../data/fleet';
 import { addBooking, type ServiceType } from '../lib/bookings';
-import { easeLuxury, overlayReveal, pageSlide } from '../lib/motion';
+import { easeLuxury, bookingPortal, pageSlide, stepStagger, stepChild } from '../lib/motion';
 
 type Step = 'welcome' | 'vehicle' | 'service' | 'calendar' | 'details' | 'confirm';
 
@@ -62,6 +62,7 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
   const [guestPhone, setGuestPhone] = useState('');
   const [notes, setNotes] = useState('');
   const [refId, setRefId] = useState('');
+  const [direction, setDirection] = useState(1);
 
   const vehicle = GROUND_FLEET.find((v) => v.id === vehicleId) || GROUND_FLEET[0];
   const tour = ICELAND_TOURS.find((t) => t.id === tourId);
@@ -81,12 +82,17 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
 
   const goNext = () => {
     const i = steps.indexOf(step);
-    if (i < steps.length - 1) setStep(steps[i + 1]);
+    if (i < steps.length - 1) {
+      setDirection(1);
+      setStep(steps[i + 1]);
+    }
   };
   const goBack = () => {
     const i = steps.indexOf(step);
-    if (i > 0) setStep(steps[i - 1]);
-    else onClose();
+    if (i > 0) {
+      setDirection(-1);
+      setStep(steps[i - 1]);
+    } else onClose();
   };
 
   const canContinue = () => {
@@ -115,6 +121,7 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
       estimatedUSD: estimate,
     });
     setRefId(booking.id);
+    setDirection(1);
     setStep('confirm');
   };
 
@@ -129,13 +136,29 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
   return (
     <motion.div
       className="fixed inset-0 z-[70] bg-[#080B0E] overflow-y-auto"
-      variants={overlayReveal}
+      variants={bookingPortal}
       initial="hidden"
       animate="show"
       exit="exit"
     >
-      <div className="min-h-full flex flex-col">
-        <header className="sticky top-0 z-10 bg-[#080B0E]/95 backdrop-blur border-b border-white/10 px-6 sm:px-10 py-4">
+      <motion.div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            'radial-gradient(ellipse 80% 50% at 50% -10%, rgba(197,168,128,0.14) 0%, transparent 55%), radial-gradient(ellipse 50% 35% at 90% 100%, rgba(197,168,128,0.08) 0%, transparent 50%)',
+        }}
+        animate={{ opacity: [0.7, 1, 0.7] }}
+        transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
+      />
+
+      <div className="relative min-h-full flex flex-col">
+        <motion.header
+          className="sticky top-0 z-10 bg-[#080B0E]/95 backdrop-blur border-b border-white/10 px-6 sm:px-10 py-4"
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.4, duration: 0.55, ease: easeLuxury }}
+        >
           <div className="max-w-3xl mx-auto flex items-center justify-between gap-4">
             <button
               onClick={goBack}
@@ -148,10 +171,10 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
               {steps.filter((s) => s !== 'confirm').map((s, i) => (
                 <div key={s} className="h-1 flex-1 rounded-full bg-white/10 overflow-hidden">
                   <motion.div
-                    className="h-full bg-[#C5A880] origin-left"
+                    className="h-full bg-[#C5A880]"
                     initial={false}
                     animate={{ scaleX: i <= stepIndex && step !== 'confirm' ? 1 : 0 }}
-                    transition={{ duration: 0.45, ease: easeLuxury }}
+                    transition={{ duration: 0.5, ease: easeLuxury }}
                     style={{ transformOrigin: 'left' }}
                   />
                 </div>
@@ -161,20 +184,22 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
               Iceland Limousine
             </span>
           </div>
-        </header>
+        </motion.header>
 
         <div className="flex-1 max-w-3xl mx-auto w-full px-6 sm:px-10 py-10 sm:py-14">
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={step}
+              custom={direction}
               variants={pageSlide}
               initial="enter"
               animate="center"
               exit="exit"
             >
+              <motion.div variants={stepStagger} initial="hidden" animate="show" className="min-h-[40vh]">
           {step === 'welcome' && (
             <div className="space-y-8">
-              <div className="space-y-4">
+              <motion.div variants={stepChild} className="space-y-4">
                 <span className="text-[11px] font-semibold tracking-[0.28em] uppercase text-[#C5A880]">
                   Book your journey
                 </span>
@@ -186,8 +211,8 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
                   Choose your vehicle, pick a date on the calendar, and send a booking request.
                   Transparent pricing — confirmed by our concierge.
                 </p>
-              </div>
-              <ul className="space-y-3 text-sm text-slate-300">
+              </motion.div>
+              <motion.ul variants={stepChild} className="space-y-3 text-sm text-slate-300">
                 {[
                   'See both cars and live rates',
                   'Airport transfer, hourly hire, or day tour',
@@ -198,33 +223,40 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
                     {t}
                   </li>
                 ))}
-              </ul>
-              <button
+              </motion.ul>
+              <motion.button
+                variants={stepChild}
+                type="button"
                 onClick={goNext}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 className="inline-flex items-center gap-2 bg-[#C5A880] hover:bg-[#d6ba94] text-[#080B0E] font-semibold text-xs tracking-[0.2em] uppercase px-8 py-4"
               >
                 Begin <ArrowRight className="w-4 h-4" />
-              </button>
+              </motion.button>
             </div>
           )}
 
           {step === 'vehicle' && (
             <div className="space-y-8">
-              <div className="space-y-3">
+              <motion.div variants={stepChild} className="space-y-3">
                 <span className="text-[11px] font-semibold tracking-[0.28em] uppercase text-[#C5A880]">
                   Step 1 · Fleet
                 </span>
                 <h2 className="font-serif-luxury text-3xl sm:text-4xl text-white">Which car?</h2>
-              </div>
+              </motion.div>
               <div className="space-y-4">
                 {GROUND_FLEET.map((v) => {
                   const selected = vehicleId === v.id;
                   return (
-                    <button
+                    <motion.button
                       key={v.id}
                       type="button"
+                      variants={stepChild}
                       onClick={() => setVehicleId(v.id)}
-                      className={`w-full text-left overflow-hidden border transition-all ${
+                      whileHover={{ y: -2 }}
+                      whileTap={{ scale: 0.995 }}
+                      className={`w-full text-left overflow-hidden border transition-colors ${
                         selected
                           ? 'border-[#C5A880] bg-[#C5A880]/10'
                           : 'border-white/10 bg-[#0C1017] hover:border-white/25'
@@ -258,7 +290,7 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
                           </div>
                         </div>
                       </div>
-                    </button>
+                    </motion.button>
                   );
                 })}
               </div>
@@ -267,12 +299,12 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
 
           {step === 'service' && (
             <div className="space-y-8">
-              <div className="space-y-3">
+              <motion.div variants={stepChild} className="space-y-3">
                 <span className="text-[11px] font-semibold tracking-[0.28em] uppercase text-[#C5A880]">
                   Step 2 · Service
                 </span>
                 <h2 className="font-serif-luxury text-3xl sm:text-4xl text-white">What do you need?</h2>
-              </div>
+              </motion.div>
               <div className="space-y-3">
                 {(
                   [
@@ -293,11 +325,14 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
                     },
                   ] as const
                 ).map((s) => (
-                  <button
+                  <motion.button
                     key={s.id}
                     type="button"
+                    variants={stepChild}
                     onClick={() => setServiceType(s.id)}
-                    className={`w-full text-left p-5 border transition-all ${
+                    whileHover={{ y: -2 }}
+                    whileTap={{ scale: 0.995 }}
+                    className={`w-full text-left p-5 border transition-colors ${
                       serviceType === s.id
                         ? 'border-[#C5A880] bg-[#C5A880]/10'
                         : 'border-white/10 bg-[#0C1017] hover:border-white/25'
@@ -305,12 +340,12 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
                   >
                     <div className="font-serif-luxury text-xl text-white">{s.title}</div>
                     <div className="text-xs text-slate-400 mt-1">{s.blurb}</div>
-                  </button>
+                  </motion.button>
                 ))}
               </div>
 
               {serviceType === 'hourly_hire' && (
-                <div className="space-y-2">
+                <motion.div variants={stepChild} className="space-y-2">
                   <label className="text-xs text-slate-400">Hours needed</label>
                   <input
                     type="number"
@@ -320,11 +355,11 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
                     onChange={(e) => setHoursNeeded(Math.max(3, parseInt(e.target.value) || 3))}
                     className="w-32 bg-[#0C1017] border border-white/15 px-3 py-2.5 text-white outline-none focus:border-[#C5A880]"
                   />
-                </div>
+                </motion.div>
               )}
 
               {serviceType === 'day_tour' && (
-                <div className="space-y-3">
+                <motion.div variants={stepChild} className="space-y-3">
                   <label className="text-xs text-slate-400">Select tour</label>
                   {ICELAND_TOURS.map((t) => (
                     <button
@@ -346,26 +381,26 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
                       <p className="text-[11px] text-slate-500 mt-1">{t.durationHours}h · ~{t.distanceKm} km</p>
                     </button>
                   ))}
-                </div>
+                </motion.div>
               )}
 
-              <div className="pt-2 text-sm text-slate-300">
+              <motion.div variants={stepChild} className="pt-2 text-sm text-slate-300">
                 Estimated total:{' '}
                 <span className="text-[#C5A880] font-semibold text-lg">{formatUSD(estimate)}</span>
-              </div>
+              </motion.div>
             </div>
           )}
 
           {step === 'calendar' && (
             <div className="space-y-8">
-              <div className="space-y-3">
+              <motion.div variants={stepChild} className="space-y-3">
                 <span className="text-[11px] font-semibold tracking-[0.28em] uppercase text-[#C5A880]">
                   Step 3 · Schedule
                 </span>
                 <h2 className="font-serif-luxury text-3xl sm:text-4xl text-white">Pick a date &amp; time</h2>
-              </div>
+              </motion.div>
 
-              <div className="border border-white/10 bg-[#0C1017] p-5 sm:p-6">
+              <motion.div variants={stepChild} className="border border-white/10 bg-[#0C1017] p-5 sm:p-6">
                 <div className="flex items-center justify-between mb-5">
                   <button
                     type="button"
@@ -434,9 +469,9 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
                     );
                   })}
                 </div>
-              </div>
+              </motion.div>
 
-              <div className="space-y-3">
+              <motion.div variants={stepChild} className="space-y-3">
                 <label className="text-xs text-slate-400 flex items-center gap-2">
                   <Clock className="w-3.5 h-3.5 text-[#C5A880]" /> Pickup time
                 </label>
@@ -456,20 +491,20 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
                     </button>
                   ))}
                 </div>
-              </div>
+              </motion.div>
             </div>
           )}
 
           {step === 'details' && (
             <div className="space-y-8">
-              <div className="space-y-3">
+              <motion.div variants={stepChild} className="space-y-3">
                 <span className="text-[11px] font-semibold tracking-[0.28em] uppercase text-[#C5A880]">
                   Step 4 · Details
                 </span>
                 <h2 className="font-serif-luxury text-3xl sm:text-4xl text-white">Who &amp; where?</h2>
-              </div>
+              </motion.div>
 
-              <div className="space-y-4 text-xs">
+              <motion.div variants={stepChild} className="space-y-4 text-xs">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
                     <label className="text-slate-400">Full name *</label>
@@ -542,9 +577,12 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
                     className="w-full bg-[#0C1017] border border-white/15 px-3 py-2.5 text-white outline-none focus:border-[#C5A880] resize-none"
                   />
                 </div>
-              </div>
+              </motion.div>
 
-              <div className="border border-white/10 bg-[#0C1017] p-5 space-y-2 text-xs text-slate-400">
+              <motion.div
+                variants={stepChild}
+                className="border border-white/10 bg-[#0C1017] p-5 space-y-2 text-xs text-slate-400"
+              >
                 <div className="flex justify-between">
                   <span>Vehicle</span>
                   <span className="text-white">{vehicle.name}</span>
@@ -559,43 +597,60 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
                   <span className="text-slate-300">Estimated total</span>
                   <span className="text-[#C5A880] font-semibold">{formatUSD(estimate)}</span>
                 </div>
-              </div>
+              </motion.div>
             </div>
           )}
 
           {step === 'confirm' && (
             <div className="text-center space-y-6 py-8">
-              <div className="w-16 h-16 rounded-full bg-[#C5A880]/20 border border-[#C5A880] flex items-center justify-center mx-auto text-[#C5A880]">
+              <motion.div
+                variants={stepChild}
+                className="w-16 h-16 rounded-full bg-[#C5A880]/20 border border-[#C5A880] flex items-center justify-center mx-auto text-[#C5A880]"
+                initial={{ scale: 0.6, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.55, ease: easeLuxury, delay: 0.15 }}
+              >
                 <CheckCircle2 className="w-8 h-8" />
-              </div>
-              <h2 className="font-serif-luxury text-3xl sm:text-4xl text-white">Request received</h2>
-              <p className="text-sm text-slate-400 max-w-md mx-auto leading-relaxed">
+              </motion.div>
+              <motion.h2 variants={stepChild} className="font-serif-luxury text-3xl sm:text-4xl text-white">
+                Request received
+              </motion.h2>
+              <motion.p
+                variants={stepChild}
+                className="text-sm text-slate-400 max-w-md mx-auto leading-relaxed"
+              >
                 Reference <strong className="text-[#C5A880] font-mono">{refId}</strong>. Our concierge
                 will confirm availability and final pricing shortly.
-              </p>
-              <div className="text-xs text-slate-500 space-y-1">
+              </motion.p>
+              <motion.div variants={stepChild} className="text-xs text-slate-500 space-y-1">
                 <p>
                   {vehicle.name} · {date} at {time}
                 </p>
                 <p>Estimate {formatUSD(estimate)}</p>
-              </div>
-              <button
+              </motion.div>
+              <motion.button
+                variants={stepChild}
+                type="button"
                 onClick={onComplete}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 className="bg-[#C5A880] hover:bg-[#d6ba94] text-[#080B0E] font-semibold text-xs tracking-[0.2em] uppercase px-8 py-3.5"
               >
                 Done
-              </button>
+              </motion.button>
             </div>
           )}
+              </motion.div>
             </motion.div>
           </AnimatePresence>
         </div>
 
         {step !== 'welcome' && step !== 'confirm' && (
           <motion.div
-            initial={{ y: 40, opacity: 0 }}
+            key={`footer-${step}`}
+            initial={{ y: 28, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.45, ease: easeLuxury }}
+            transition={{ duration: 0.45, ease: easeLuxury, delay: 0.15 }}
             className="sticky bottom-0 border-t border-white/10 bg-[#080B0E]/95 backdrop-blur px-6 sm:px-10 py-4"
           >
             <div className="max-w-3xl mx-auto flex items-center justify-between gap-4">
