@@ -19,4 +19,5 @@ export const SIBLING = {
   jetsContact: `${SITES.jets}#contact`,
   limousineHome: SITES.limousine,
   limousineBook: `${SITES.limousine}/#/book`,
+  parentBlueprint: `${SITES.parent}#/blueprint`,
 } as const;

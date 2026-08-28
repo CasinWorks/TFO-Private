@@ -11,3 +11,11 @@ export const SITES = {
   jets: siteUrl(import.meta.env.VITE_JETS_URL, 'http://localhost:3001'),
   limousine: siteUrl(import.meta.env.VITE_LIMOUSINE_URL, 'http://localhost:3002'),
 } as const;
+
+export const SIBLING = {
+  parentHome: SITES.parent,
+  jetsHome: SITES.jets,
+  limousineHome: SITES.limousine,
+  limousineBook: `${SITES.limousine}/#/book`,
+  parentBlueprint: `${SITES.parent}#/blueprint`,
+} as const;

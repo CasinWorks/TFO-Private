@@ -1,6 +1,7 @@
 import React from 'react';
 import { Phone, Mail } from 'lucide-react';
-import { EcosystemLinks } from './EcosystemLinks';
+import { SiteNavLinks } from './SiteNavLinks';
+import { DemoFooterLinks } from './DemoFooterLinks';
 import { CONTACT, IMAGES } from '../data/content';
 
 interface FooterProps {
@@ -49,10 +50,11 @@ export const Footer: React.FC<FooterProps> = ({ onOpenAbout }) => {
             >
               <Mail className="w-3.5 h-3.5 text-[#C5A880]" /> {CONTACT.email}
             </a>
-            <EcosystemLinks variant="footer" />
+            <SiteNavLinks variant="footer" />
           </div>
         </div>
-        <div className="mt-12 pt-6 border-t border-white/8 text-[10px] tracking-[0.2em] uppercase text-slate-600">
+        <DemoFooterLinks />
+        <div className="mt-8 pt-6 border-t border-white/8 text-[10px] tracking-[0.2em] uppercase text-slate-600">
           © {new Date().getFullYear()} TFO Jets · Member of NBAA
         </div>
       </div>

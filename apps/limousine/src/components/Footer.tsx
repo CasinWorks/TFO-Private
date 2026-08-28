@@ -1,6 +1,7 @@
 import React from 'react';
 import { Car, Phone, Mail, Lock } from 'lucide-react';
-import { EcosystemLinks } from './EcosystemLinks';
+import { SiteNavLinks } from './SiteNavLinks';
+import { DemoFooterLinks } from './DemoFooterLinks';
 
 interface FooterProps {
   onOpenBooking: () => void;
@@ -36,7 +37,7 @@ export const Footer: React.FC<FooterProps> = ({
               Current fleet: Volvo XC90 &amp; Toyota Land Cruiser 150 VX.
             </p>
             <div className="flex flex-col gap-2 pt-2 text-xs">
-              <EcosystemLinks variant="footer" />
+              <SiteNavLinks variant="footer" />
             </div>
           </div>
 
@@ -84,7 +85,9 @@ export const Footer: React.FC<FooterProps> = ({
           </div>
         </div>
 
-        <div className="mt-12 pt-6 border-t border-white/10 text-[10px] tracking-wider uppercase text-slate-500 flex flex-wrap justify-between gap-2">
+        <DemoFooterLinks />
+
+        <div className="mt-8 pt-6 border-t border-white/10 text-[10px] tracking-wider uppercase text-slate-500 flex flex-wrap justify-between gap-2">
           <span>© {new Date().getFullYear()} Iceland Limousine · Part of TFO Private</span>
           <span>Confidential VIP Protocol</span>
         </div>

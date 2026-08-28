@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AnimatePresence } from 'motion/react';
 import { ActiveDivision } from './types';
 import { Navigation } from './components/Navigation';
@@ -13,14 +13,38 @@ import { ArchitectureBlueprintView } from './components/Architecture/Architectur
 import { AboutView } from './components/About/AboutView';
 import { EnquiryModal } from './components/Modals/EnquiryModal';
 
+function hashToDivision(): ActiveDivision {
+  const hash = window.location.hash.replace(/^#\/?/, '');
+  if (hash === 'about') return 'about';
+  if (hash === 'blueprint') return 'blueprint';
+  return 'parent';
+}
+
+function divisionToHash(division: ActiveDivision) {
+  if (division === 'parent') return '';
+  return `#/${division}`;
+}
+
 /**
  * Parent brand portal only.
  * Aviation → TFO Jets sibling site; Iceland → Iceland Limousine sibling site.
  */
 export default function App() {
-  const [activeDivision, setActiveDivision] = useState<ActiveDivision>('parent');
+  const [activeDivision, setActiveDivision] = useState<ActiveDivision>(() => hashToDivision());
   const [enquiryOpen, setEnquiryOpen] = useState(false);
   const [enquiryTopic, setEnquiryTopic] = useState('General Runway to Road VIP Service');
+
+  useEffect(() => {
+    const onHash = () => setActiveDivision(hashToDivision());
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
+  }, []);
+
+  const goDivision = (division: ActiveDivision) => {
+    setActiveDivision(division);
+    window.location.hash = divisionToHash(division);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const handleOpenEnquiry = (topic?: string) => {
     setEnquiryTopic(topic || 'General Runway to Road VIP Service');
@@ -31,14 +55,14 @@ export default function App() {
     <div className="min-h-screen bg-[#080B0E] text-[#F3F4F6] flex flex-col justify-between selection:bg-[#C5A880] selection:text-[#080B0E]">
       <Navigation
         activeDivision={activeDivision}
-        setActiveDivision={setActiveDivision}
+        goDivision={goDivision}
         onOpenEnquiry={handleOpenEnquiry}
       />
 
       <main className="flex-1">
         {activeDivision === 'parent' && (
           <ParentPortalView
-            setActiveDivision={setActiveDivision}
+            setActiveDivision={goDivision}
             onOpenEnquiry={handleOpenEnquiry}
           />
         )}
@@ -46,17 +70,14 @@ export default function App() {
         {activeDivision === 'about' && (
           <AboutView
             onOpenEnquiry={handleOpenEnquiry}
-            onBackHome={() => {
-              setActiveDivision('parent');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onBackHome={() => goDivision('parent')}
           />
         )}
 
         {activeDivision === 'blueprint' && <ArchitectureBlueprintView />}
       </main>
 
-      <Footer setActiveDivision={setActiveDivision} onOpenEnquiry={handleOpenEnquiry} />
+      <Footer goDivision={goDivision} onOpenEnquiry={handleOpenEnquiry} />
 
       <AnimatePresence>
         {enquiryOpen && (

@@ -2,18 +2,18 @@ import React from 'react';
 import { ActiveDivision } from '../types';
 import { SITES } from '../config/sites';
 import { ShieldCheck, Plane, Car, Phone, Mail, MapPin, Award } from 'lucide-react';
+import { DemoFooterLinks } from './DemoFooterLinks';
 
 interface FooterProps {
-  setActiveDivision: (division: ActiveDivision) => void;
+  goDivision: (division: ActiveDivision) => void;
   onOpenEnquiry: (topic?: string) => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ setActiveDivision, onOpenEnquiry }) => {
+export const Footer: React.FC<FooterProps> = ({ goDivision, onOpenEnquiry }) => {
   return (
     <footer className="bg-[#05070A] border-t border-white/10 text-slate-400 text-sm">
       <div className="site-shell py-14">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
-          
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center space-x-3">
               <div className="border border-[#C5A880]/50 p-2 rounded bg-black/60">
@@ -47,61 +47,39 @@ export const Footer: React.FC<FooterProps> = ({ setActiveDivision, onOpenEnquiry
 
           <div className="space-y-3">
             <h3 className="font-display-luxury text-xs uppercase tracking-widest text-white font-semibold border-b border-white/10 pb-2">
-              Ecosystem Divisions
+              Our websites
             </h3>
             <ul className="space-y-2 text-xs">
               <li>
                 <button
-                  onClick={() => {
-                    setActiveDivision('parent');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
+                  type="button"
+                  onClick={() => goDivision('parent')}
                   className="hover:text-[#C5A880] transition-colors flex items-center gap-2"
                 >
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#C5A880]"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#C5A880]" />
                   TFO Private Portal
                 </button>
               </li>
               <li>
-                <button
-                  onClick={() => {
-                    setActiveDivision('about');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                  className="hover:text-[#C5A880] transition-colors flex items-center gap-2"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#C5A880]"></span>
-                  About Us
-                </button>
+                <a href={SITES.jets} className="hover:text-[#C5A880] transition-colors flex items-center gap-2">
+                  <Plane className="w-3 h-3 text-[#C5A880]" />
+                  TFO Jets
+                </a>
               </li>
               <li>
-                <a
-                  href={SITES.limousine}
-                  className="hover:text-[#C5A880] transition-colors flex items-center gap-2"
-                >
+                <a href={SITES.limousine} className="hover:text-[#C5A880] transition-colors flex items-center gap-2">
                   <Car className="w-3 h-3 text-[#C5A880]" />
                   Iceland Limousine
                 </a>
               </li>
               <li>
-                <a
-                  href={SITES.jets}
+                <button
+                  type="button"
+                  onClick={() => goDivision('about')}
                   className="hover:text-[#C5A880] transition-colors flex items-center gap-2"
                 >
-                  <Plane className="w-3 h-3 text-[#C5A880]" />
-                  TFO Jets Aviation
-                </a>
-              </li>
-              <li>
-                <button
-                  onClick={() => {
-                    setActiveDivision('blueprint');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                  className="text-amber-400 hover:text-amber-300 transition-colors flex items-center gap-2"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
-                  System Blueprint Specs
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#C5A880]" />
+                  About Us
                 </button>
               </li>
             </ul>
@@ -112,10 +90,10 @@ export const Footer: React.FC<FooterProps> = ({ setActiveDivision, onOpenEnquiry
               Specialist Services
             </h3>
             <ul className="space-y-1.5 text-xs text-slate-400">
-              <li><button onClick={() => onOpenEnquiry('KEF Airport Transfer')} className="hover:text-white transition-colors">KEF Airport VIP Transfer</button></li>
-              <li><button onClick={() => onOpenEnquiry('FBO Tarmac Escort')} className="hover:text-white transition-colors">Tarmac Airside Escort</button></li>
-              <li><button onClick={() => onOpenEnquiry('Golden Circle Tour')} className="hover:text-white transition-colors">Golden Circle Private Tour</button></li>
-              <li><button onClick={() => onOpenEnquiry('Transatlantic Ferry Flight')} className="hover:text-white transition-colors">Transatlantic Aircraft Ferry</button></li>
+              <li><button type="button" onClick={() => onOpenEnquiry('KEF Airport Transfer')} className="hover:text-white transition-colors">KEF Airport VIP Transfer</button></li>
+              <li><button type="button" onClick={() => onOpenEnquiry('FBO Tarmac Escort')} className="hover:text-white transition-colors">Tarmac Airside Escort</button></li>
+              <li><button type="button" onClick={() => onOpenEnquiry('Golden Circle Tour')} className="hover:text-white transition-colors">Golden Circle Private Tour</button></li>
+              <li><button type="button" onClick={() => onOpenEnquiry('Transatlantic Ferry Flight')} className="hover:text-white transition-colors">Transatlantic Aircraft Ferry</button></li>
               <li><a href={SITES.limousine} className="hover:text-white transition-colors">Chauffeur &amp; Day Tours</a></li>
               <li><a href={SITES.jets} className="hover:text-white transition-colors">On-Demand Jet Charter</a></li>
             </ul>
@@ -144,6 +122,7 @@ export const Footer: React.FC<FooterProps> = ({ setActiveDivision, onOpenEnquiry
               </div>
               <div className="pt-2">
                 <button
+                  type="button"
                   onClick={() => onOpenEnquiry()}
                   className="w-full bg-white/5 hover:bg-[#C5A880] hover:text-[#080B0E] text-slate-200 text-xs font-semibold py-2 px-3 rounded border border-white/10 transition-all uppercase tracking-wider text-center"
                 >
@@ -152,12 +131,13 @@ export const Footer: React.FC<FooterProps> = ({ setActiveDivision, onOpenEnquiry
               </div>
             </div>
           </div>
-
         </div>
 
-        <div className="mt-12 pt-6 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500 gap-4">
+        <DemoFooterLinks goDivision={goDivision} />
+
+        <div className="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500 gap-4">
           <div className="flex items-center space-x-6">
-            <span>© {new Date().getFullYear()} TFO Private Ecosystem. All rights reserved.</span>
+            <span>© {new Date().getFullYear()} TFO Private. All rights reserved.</span>
             <span className="hidden sm:inline-block">|</span>
             <span className="hidden sm:inline-block">Licensed Tour Operator & Chauffeur Service (Icelandic Transport Authority #2024-918)</span>
           </div>
@@ -165,8 +145,6 @@ export const Footer: React.FC<FooterProps> = ({ setActiveDivision, onOpenEnquiry
             <a href={SITES.limousine} className="text-slate-400 hover:text-[#C5A880]">icelandlimousine.com</a>
             <span>•</span>
             <a href={SITES.jets} className="text-slate-400 hover:text-[#C5A880]">tfojets.com</a>
-            <span>•</span>
-            <span className="text-amber-300">Runway to Road</span>
           </div>
         </div>
       </div>

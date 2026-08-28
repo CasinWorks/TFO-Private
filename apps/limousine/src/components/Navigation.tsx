@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Menu, X, Lock } from 'lucide-react';
-import { EcosystemLinks } from './EcosystemLinks';
+import { SiteNavLinks } from './SiteNavLinks';
 
 interface NavigationProps {
   activeView?: 'home' | 'about';
@@ -88,7 +88,7 @@ export const Navigation: React.FC<NavigationProps> = ({
             >
               About
             </button>
-            <EcosystemLinks variant="nav" />
+            <SiteNavLinks variant="nav" />
             <button
               onClick={onOpenStaff}
               className="hover:text-[#C5A880] transition-colors cursor-pointer inline-flex items-center gap-1.5 text-slate-500"
@@ -158,7 +158,7 @@ export const Navigation: React.FC<NavigationProps> = ({
               {staffSignedIn ? 'Inquiries' : 'Staff login'}
             </button>
             <div className="pt-4 border-t border-white/10 space-y-4">
-              <EcosystemLinks variant="mobile" />
+              <SiteNavLinks variant="mobile" />
             </div>
           </div>
         </div>
