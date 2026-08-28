@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Menu, X, Lock } from 'lucide-react';
+import { Lock } from 'lucide-react';
 import { SiteNavLinks } from './SiteNavLinks';
+import { MenuToggle, MobileNavItem, MobileNavMenu } from './MobileNavMenu';
 
 interface NavigationProps {
   activeView?: 'home' | 'about';
@@ -29,6 +30,20 @@ export const Navigation: React.FC<NavigationProps> = ({
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  useEffect(() => {
+    if (mobileOpen) {
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+    };
+  }, [mobileOpen]);
 
   const scrollTo = (id: string) => {
     setMobileOpen(false);
@@ -106,63 +121,85 @@ export const Navigation: React.FC<NavigationProps> = ({
             >
               Book
             </button>
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
+            <MenuToggle
+              open={mobileOpen}
+              onToggle={() => setMobileOpen(!mobileOpen)}
               className="md:hidden text-white p-1.5"
-              aria-label="Menu"
-            >
-              {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
+              ariaLabel="Menu"
+            />
           </div>
         </div>
       </header>
 
-      {mobileOpen && (
-        <div className="fixed inset-0 z-40 bg-[#080B0E]/98 pt-28 px-6 md:hidden">
-          <div className="space-y-6 text-sm tracking-[0.2em] uppercase text-slate-200">
-            <button onClick={() => scrollTo('fleet')} className="block w-full text-left hover:text-[#C5A880]">
-              Fleet
-            </button>
-            <button onClick={() => scrollTo('tours')} className="block w-full text-left hover:text-[#C5A880]">
-              Tours
-            </button>
-            <button onClick={() => scrollTo('services')} className="block w-full text-left hover:text-[#C5A880]">
-              Services
-            </button>
+      <MobileNavMenu open={mobileOpen} onClose={() => setMobileOpen(false)} hideFrom="md:hidden">
+        {(
+          [
+            { id: 'fleet', label: 'Fleet' },
+            { id: 'tours', label: 'Tours' },
+            { id: 'services', label: 'Services' },
+          ] as const
+        ).map(({ id, label }) => (
+          <MobileNavItem key={id}>
             <button
-              onClick={() => {
-                setMobileOpen(false);
-                onOpenAbout();
-              }}
-              className="block w-full text-left hover:text-[#C5A880]"
+              type="button"
+              onClick={() => scrollTo(id)}
+              className="block w-full text-left hover:text-[#C5A880] text-xl font-serif-luxury tracking-normal normal-case text-slate-200"
             >
-              About Us
+              {label}
             </button>
-            <button
-              onClick={() => {
-                setMobileOpen(false);
-                onOpenEnquiry('Iceland Limousine Concierge');
-              }}
-              className="block w-full text-left hover:text-[#C5A880]"
-            >
-              Concierge
-            </button>
-            <button
-              onClick={() => {
-                setMobileOpen(false);
-                onOpenStaff();
-              }}
-              className="block w-full text-left hover:text-[#C5A880] inline-flex items-center gap-2"
-            >
-              <Lock className="w-3.5 h-3.5" />
-              {staffSignedIn ? 'Inquiries' : 'Staff login'}
-            </button>
-            <div className="pt-4 border-t border-white/10 space-y-4">
-              <SiteNavLinks variant="mobile" />
-            </div>
-          </div>
-        </div>
-      )}
+          </MobileNavItem>
+        ))}
+        <MobileNavItem>
+          <button
+            type="button"
+            onClick={() => {
+              setMobileOpen(false);
+              onOpenAbout();
+            }}
+            className="block w-full text-left hover:text-[#C5A880] text-xl font-serif-luxury tracking-normal normal-case text-slate-200"
+          >
+            About Us
+          </button>
+        </MobileNavItem>
+        <MobileNavItem>
+          <button
+            type="button"
+            onClick={() => {
+              setMobileOpen(false);
+              onOpenEnquiry('Iceland Limousine Concierge');
+            }}
+            className="block w-full text-left hover:text-[#C5A880] text-xl font-serif-luxury tracking-normal normal-case text-slate-200"
+          >
+            Concierge
+          </button>
+        </MobileNavItem>
+        <MobileNavItem>
+          <button
+            type="button"
+            onClick={() => {
+              setMobileOpen(false);
+              onOpenStaff();
+            }}
+            className="block w-full text-left hover:text-[#C5A880] text-xl font-serif-luxury tracking-normal normal-case text-slate-200 inline-flex items-center gap-2"
+          >
+            <Lock className="w-3.5 h-3.5" />
+            {staffSignedIn ? 'Inquiries' : 'Staff login'}
+          </button>
+        </MobileNavItem>
+        <MobileNavItem className="pt-4 border-t border-white/10 space-y-4 text-sm tracking-[0.2em] uppercase">
+          <span className="text-[10px] text-[#C5A880] tracking-[0.28em] block mb-2 normal-case">Our websites</span>
+          <SiteNavLinks variant="mobile" />
+        </MobileNavItem>
+        <MobileNavItem>
+          <button
+            type="button"
+            onClick={() => onOpenBooking()}
+            className="inline-flex mt-2 bg-[#C5A880] hover:bg-[#d6ba94] text-[#080B0E] font-semibold tracking-[0.2em] uppercase px-6 py-3 transition-colors"
+          >
+            Book now
+          </button>
+        </MobileNavItem>
+      </MobileNavMenu>
     </>
   );
 };

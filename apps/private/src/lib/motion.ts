@@ -122,3 +122,19 @@ export const overlayReveal: Variants = {
   show: { opacity: 1, transition: { duration: 0.4 } },
   exit: { opacity: 0, transition: { duration: 0.3 } },
 };
+
+export const mobileMenuStagger: Variants = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.05, delayChildren: 0.08 },
+  },
+};
+
+export const mobileMenuItem: Variants = {
+  hidden: { opacity: 0, x: -12 },
+  show: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.4, ease: easeLuxury },
+  },
+};

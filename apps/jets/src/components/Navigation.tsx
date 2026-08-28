@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Menu, X } from 'lucide-react';
-import { AnimatePresence, motion } from 'motion/react';
 import { SiteNavLinks } from './SiteNavLinks';
+import { MenuToggle, MobileNavItem, MobileNavMenu } from './MobileNavMenu';
 
 const LINKS = [
   { id: 'home', label: 'Home' },
@@ -123,70 +122,57 @@ export const Navigation: React.FC<NavigationProps> = ({
             >
               Contact
             </button>
-            <button
-              type="button"
-              onClick={() => setMobileOpen(!mobileOpen)}
+            <MenuToggle
+              open={mobileOpen}
+              onToggle={() => setMobileOpen(!mobileOpen)}
               className="md:hidden text-white p-1.5"
-              aria-label="Menu"
-            >
-              {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
+              ariaLabel="Menu"
+            />
           </div>
         </div>
       </header>
 
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 bg-[#080B0E]/98 backdrop-blur-xl pt-28 px-8 md:hidden"
+      <MobileNavMenu open={mobileOpen} onClose={() => setMobileOpen(false)} hideFrom="md:hidden">
+        {LINKS.map((link) => (
+          <MobileNavItem key={link.id}>
+            <button
+              type="button"
+              onClick={() => scrollTo(link.id)}
+              className="block w-full text-left hover:text-[#C5A880] text-xl font-serif-luxury tracking-normal normal-case text-slate-200"
+            >
+              {link.label}
+            </button>
+          </MobileNavItem>
+        ))}
+        <MobileNavItem>
+          <button
+            type="button"
+            onClick={() => {
+              setMobileOpen(false);
+              onOpenAbout();
+            }}
+            className="block w-full text-left hover:text-[#C5A880] text-xl font-serif-luxury tracking-normal normal-case text-slate-200"
           >
-            <div className="space-y-8 text-sm tracking-[0.22em] uppercase text-slate-200">
-              {LINKS.map((link, i) => (
-                <motion.button
-                  key={link.id}
-                  type="button"
-                  initial={{ opacity: 0, x: -12 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.05 * i }}
-                  onClick={() => scrollTo(link.id)}
-                  className="block w-full text-left hover:text-[#C5A880] text-xl font-serif-luxury tracking-normal normal-case"
-                >
-                  {link.label}
-                </motion.button>
-              ))}
-              <motion.button
-                type="button"
-                initial={{ opacity: 0, x: -12 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.05 * LINKS.length }}
-                onClick={() => {
-                  setMobileOpen(false);
-                  onOpenAbout();
-                }}
-                className="block w-full text-left hover:text-[#C5A880] text-xl font-serif-luxury tracking-normal normal-case"
-              >
-                About Us
-              </motion.button>
-              <div className="pt-4 border-t border-white/10 space-y-4">
-                <SiteNavLinks variant="mobile" />
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  setMobileOpen(false);
-                  onOpenContact();
-                }}
-                className="inline-flex mt-4 bg-[#C5A880] text-[#080B0E] font-semibold tracking-[0.2em] uppercase px-6 py-3"
-              >
-                Contact us
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            About Us
+          </button>
+        </MobileNavItem>
+        <MobileNavItem className="pt-4 border-t border-white/10 space-y-4 text-sm tracking-[0.2em] uppercase">
+          <span className="text-[10px] text-[#C5A880] tracking-[0.28em] block mb-2">Our websites</span>
+          <SiteNavLinks variant="mobile" />
+        </MobileNavItem>
+        <MobileNavItem>
+          <button
+            type="button"
+            onClick={() => {
+              setMobileOpen(false);
+              onOpenContact();
+            }}
+            className="inline-flex mt-2 bg-[#C5A880] hover:bg-[#d6ba94] text-[#080B0E] font-semibold tracking-[0.2em] uppercase px-6 py-3 transition-colors"
+          >
+            Contact us
+          </button>
+        </MobileNavItem>
+      </MobileNavMenu>
     </>
   );
 };

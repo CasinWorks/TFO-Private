@@ -69,3 +69,19 @@ export const pageSlide: Variants = {
     transition: { duration: 0.35, ease: easeLuxury },
   },
 };
+
+export const mobileMenuStagger: Variants = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.05, delayChildren: 0.08 },
+  },
+};
+
+export const mobileMenuItem: Variants = {
+  hidden: { opacity: 0, x: -12 },
+  show: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.4, ease: easeLuxury },
+  },
+};

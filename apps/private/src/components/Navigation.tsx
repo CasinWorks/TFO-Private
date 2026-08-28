@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ActiveDivision } from '../types';
-import { Menu, X } from 'lucide-react';
 import { SiteNavLinks } from './SiteNavLinks';
+import { MenuToggle, MobileNavItem, MobileNavMenu } from './MobileNavMenu';
 
 interface NavigationProps {
   activeDivision: ActiveDivision;
@@ -96,7 +96,7 @@ export const Navigation: React.FC<NavigationProps> = ({
             </div>
           </button>
 
-          <nav className="hidden lg:flex items-center space-x-6 xl:space-x-8 text-xs tracking-[0.22em] font-medium text-slate-300 uppercase">
+          <nav className="hidden md:flex items-center space-x-6 xl:space-x-8 text-xs tracking-[0.22em] font-medium text-slate-300 uppercase">
             <SiteNavLinks variant="nav" onGoPortal={goPortal} portalActive={activeDivision === 'parent'} />
             <span className="w-px h-4 bg-white/15" aria-hidden />
             <button
@@ -136,48 +136,49 @@ export const Navigation: React.FC<NavigationProps> = ({
             >
               Enquire
             </button>
-            <button
-              id="nav-hamburger-menu-btn"
-              type="button"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden text-white hover:text-[#C5A880] p-1.5 transition-colors cursor-pointer focus:outline-none"
-              aria-label="Open Navigation Menu"
-            >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6 stroke-[1.5]" />}
-            </button>
+            <MenuToggle
+              open={mobileMenuOpen}
+              onToggle={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden text-white hover:text-[#C5A880] p-1.5 transition-colors cursor-pointer focus:outline-none"
+              ariaLabel="Menu"
+            />
           </div>
         </div>
       </header>
 
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-[#080B0E]/98 backdrop-blur-xl pt-28 px-6 lg:hidden overflow-y-auto">
-          <div className="site-shell max-w-lg space-y-6 text-sm tracking-[0.2em] uppercase text-slate-200">
-            <div className="space-y-4 pb-4 border-b border-white/10">
-              <span className="text-[10px] text-[#C5A880] tracking-[0.28em] block mb-2">Our websites</span>
-              <SiteNavLinks variant="mobile" onGoPortal={goPortal} portalActive={activeDivision === 'parent'} />
-            </div>
-            <button type="button" onClick={scrollToJourneys} className="block w-full text-left hover:text-[#C5A880] text-lg font-serif-luxury tracking-normal normal-case">
-              Journeys
-            </button>
-            <button type="button" onClick={goAbout} className="block w-full text-left hover:text-[#C5A880] text-lg font-serif-luxury tracking-normal normal-case">
-              About
-            </button>
-            <button type="button" onClick={openContact} className="block w-full text-left hover:text-[#C5A880] text-lg font-serif-luxury tracking-normal normal-case">
-              Contact
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onOpenEnquiry('Runway to Road VIP Inquiry');
-              }}
-              className="inline-flex mt-4 bg-[#C5A880] text-[#080B0E] font-semibold tracking-[0.2em] uppercase px-6 py-3"
-            >
-              Enquire
-            </button>
-          </div>
-        </div>
-      )}
+      <MobileNavMenu open={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} hideFrom="md:hidden">
+        <MobileNavItem>
+          <button type="button" onClick={scrollToJourneys} className="block w-full text-left hover:text-[#C5A880] text-xl font-serif-luxury tracking-normal normal-case text-slate-200">
+            Journeys
+          </button>
+        </MobileNavItem>
+        <MobileNavItem>
+          <button type="button" onClick={goAbout} className="block w-full text-left hover:text-[#C5A880] text-xl font-serif-luxury tracking-normal normal-case text-slate-200">
+            About
+          </button>
+        </MobileNavItem>
+        <MobileNavItem>
+          <button type="button" onClick={openContact} className="block w-full text-left hover:text-[#C5A880] text-xl font-serif-luxury tracking-normal normal-case text-slate-200">
+            Contact
+          </button>
+        </MobileNavItem>
+        <MobileNavItem className="pt-4 border-t border-white/10 space-y-4 text-sm tracking-[0.2em] uppercase">
+          <span className="text-[10px] text-[#C5A880] tracking-[0.28em] block mb-2 normal-case">Our websites</span>
+          <SiteNavLinks variant="mobile" onGoPortal={goPortal} portalActive={activeDivision === 'parent'} />
+        </MobileNavItem>
+        <MobileNavItem>
+          <button
+            type="button"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              onOpenEnquiry('Runway to Road VIP Inquiry');
+            }}
+            className="inline-flex mt-2 bg-[#C5A880] hover:bg-[#d6ba94] text-[#080B0E] font-semibold tracking-[0.2em] uppercase px-6 py-3 transition-colors"
+          >
+            Enquire
+          </button>
+        </MobileNavItem>
+      </MobileNavMenu>
     </>
   );
 };
