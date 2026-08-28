@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Menu, X, ExternalLink, Lock } from 'lucide-react';
-import { SITES } from '../config/sites';
+import { Menu, X, Lock } from 'lucide-react';
+import { EcosystemLinks } from './EcosystemLinks';
 
 interface NavigationProps {
   activeView?: 'home' | 'about';
@@ -88,9 +88,7 @@ export const Navigation: React.FC<NavigationProps> = ({
             >
               About
             </button>
-            <a href={SITES.parent} className="hover:text-[#C5A880] transition-colors inline-flex items-center gap-1.5">
-              TFO Private <ExternalLink className="w-3 h-3 opacity-60" />
-            </a>
+            <EcosystemLinks variant="nav" />
             <button
               onClick={onOpenStaff}
               className="hover:text-[#C5A880] transition-colors cursor-pointer inline-flex items-center gap-1.5 text-slate-500"
@@ -159,9 +157,9 @@ export const Navigation: React.FC<NavigationProps> = ({
               <Lock className="w-3.5 h-3.5" />
               {staffSignedIn ? 'Inquiries' : 'Staff login'}
             </button>
-            <a href={SITES.parent} className="block hover:text-[#C5A880]">
-              TFO Private
-            </a>
+            <div className="pt-4 border-t border-white/10 space-y-4">
+              <EcosystemLinks variant="mobile" />
+            </div>
           </div>
         </div>
       )}

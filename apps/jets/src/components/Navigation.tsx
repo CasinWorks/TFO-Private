@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
+import { EcosystemLinks } from './EcosystemLinks';
 
 const LINKS = [
   { id: 'home', label: 'Home' },
@@ -108,6 +109,7 @@ export const Navigation: React.FC<NavigationProps> = ({
             >
               About
             </button>
+            <EcosystemLinks variant="nav" />
           </nav>
 
           <div className="flex items-center gap-3">
@@ -168,6 +170,9 @@ export const Navigation: React.FC<NavigationProps> = ({
               >
                 About Us
               </motion.button>
+              <div className="pt-4 border-t border-white/10 space-y-4">
+                <EcosystemLinks variant="mobile" />
+              </div>
               <button
                 type="button"
                 onClick={() => {

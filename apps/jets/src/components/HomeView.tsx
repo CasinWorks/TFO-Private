@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { ArrowDown, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { CONTACT, OFFERINGS, DO_IT_ALL, GALLERY_IMAGES, TEAM, IMAGES, STATS } from '../data/content';
 import { ContactForm } from './ContactForm';
+import { EcosystemBand } from './EcosystemBand';
 import { fadeUp as fadeUpPreset, easeLuxury } from '../lib/motion';
 
 const fadeUp = fadeUpPreset;
@@ -346,6 +347,8 @@ export const HomeView: React.FC = () => {
           </div>
         </div>
       </section>
+
+      <EcosystemBand />
 
       {/* ——— CONTACT ——— */}
       <section id="contact" className="relative py-24 sm:py-32 px-6 sm:px-10 lg:px-16 xl:px-20 overflow-hidden">

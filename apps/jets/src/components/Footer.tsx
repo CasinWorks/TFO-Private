@@ -1,6 +1,6 @@
 import React from 'react';
-import { Phone, Mail, ExternalLink } from 'lucide-react';
-import { SITES } from '../config/sites';
+import { Phone, Mail } from 'lucide-react';
+import { EcosystemLinks } from './EcosystemLinks';
 import { CONTACT, IMAGES } from '../data/content';
 
 interface FooterProps {
@@ -49,12 +49,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenAbout }) => {
             >
               <Mail className="w-3.5 h-3.5 text-[#C5A880]" /> {CONTACT.email}
             </a>
-            <a
-              href={SITES.parent}
-              className="inline-flex items-center gap-2 hover:text-[#C5A880] transition-colors"
-            >
-              <ExternalLink className="w-3.5 h-3.5 text-[#C5A880]" /> TFO Private
-            </a>
+            <EcosystemLinks variant="footer" />
           </div>
         </div>
         <div className="mt-12 pt-6 border-t border-white/8 text-[10px] tracking-[0.2em] uppercase text-slate-600">

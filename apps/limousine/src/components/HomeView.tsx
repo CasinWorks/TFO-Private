@@ -13,6 +13,7 @@ import {
   MapPin,
 } from 'lucide-react';
 import { GROUND_FLEET, ICELAND_TOURS, AIRPORT_TRANSFER, formatMoney } from '../data/fleet';
+import { EcosystemBand } from './EcosystemBand';
 import { fadeUp, easeLuxury, staggerContainer, heroReveal } from '../lib/motion';
 
 interface HomeViewProps {
@@ -356,6 +357,8 @@ export const HomeView: React.FC<HomeViewProps> = ({ onOpenBooking, onOpenEnquiry
           </motion.div>
         </div>
       </section>
+
+      <EcosystemBand />
 
       <section className="relative py-28 px-0 overflow-hidden">
         <div className="absolute inset-0 z-0">

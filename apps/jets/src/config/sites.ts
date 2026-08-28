@@ -11,3 +11,12 @@ export const SITES = {
   jets: siteUrl(import.meta.env.VITE_JETS_URL, 'http://localhost:3001'),
   limousine: siteUrl(import.meta.env.VITE_LIMOUSINE_URL, 'http://localhost:3002'),
 } as const;
+
+/** Deep links into sibling sites — swap VITE_* URLs in Vercel to reconfigure. */
+export const SIBLING = {
+  parentHome: SITES.parent,
+  jetsHome: SITES.jets,
+  jetsContact: `${SITES.jets}#contact`,
+  limousineHome: SITES.limousine,
+  limousineBook: `${SITES.limousine}/#/book`,
+} as const;

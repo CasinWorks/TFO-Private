@@ -1,6 +1,6 @@
 import React from 'react';
-import { Car, Phone, Mail, ExternalLink, Lock } from 'lucide-react';
-import { SITES } from '../config/sites';
+import { Car, Phone, Mail, Lock } from 'lucide-react';
+import { EcosystemLinks } from './EcosystemLinks';
 
 interface FooterProps {
   onOpenBooking: () => void;
@@ -35,6 +35,9 @@ export const Footer: React.FC<FooterProps> = ({
               Private chauffeur, KEF transfers and bespoke Iceland tours — a specialist division of TFO Private.
               Current fleet: Volvo XC90 &amp; Toyota Land Cruiser 150 VX.
             </p>
+            <div className="flex flex-col gap-2 pt-2 text-xs">
+              <EcosystemLinks variant="footer" />
+            </div>
           </div>
 
           <div className="space-y-3">
@@ -56,11 +59,6 @@ export const Footer: React.FC<FooterProps> = ({
                 <button onClick={() => onOpenEnquiry('Iceland Limousine Concierge')} className="hover:text-[#C5A880]">
                   Concierge message
                 </button>
-              </li>
-              <li>
-                <a href={SITES.parent} className="hover:text-[#C5A880] inline-flex items-center gap-1.5">
-                  TFO Private Portal <ExternalLink className="w-3 h-3" />
-                </a>
               </li>
               <li>
                 <button
