@@ -4,6 +4,7 @@
  */
 
 import React, { useState } from 'react';
+import { AnimatePresence } from 'motion/react';
 import { ActiveDivision } from './types';
 import { Navigation } from './components/Navigation';
 import { Footer } from './components/Footer';
@@ -57,11 +58,16 @@ export default function App() {
 
       <Footer setActiveDivision={setActiveDivision} onOpenEnquiry={handleOpenEnquiry} />
 
-      <EnquiryModal
-        isOpen={enquiryOpen}
-        onClose={() => setEnquiryOpen(false)}
-        defaultTopic={enquiryTopic}
-      />
+      <AnimatePresence>
+        {enquiryOpen && (
+          <EnquiryModal
+            key="enquiry"
+            isOpen={enquiryOpen}
+            onClose={() => setEnquiryOpen(false)}
+            defaultTopic={enquiryTopic}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
