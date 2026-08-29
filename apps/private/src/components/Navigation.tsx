@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ActiveDivision } from '../types';
-import { SiteNavLinks } from './SiteNavLinks';
+import { SiteNavLinks, SIBLING_NAV } from './SiteNavLinks';
 import { MenuToggle, MobileNavItem, MobileNavMenu } from './MobileNavMenu';
 
 interface NavigationProps {
@@ -97,8 +97,7 @@ export const Navigation: React.FC<NavigationProps> = ({
           </button>
 
           <nav className="hidden md:flex items-center space-x-6 xl:space-x-8 text-xs tracking-[0.22em] font-medium text-slate-300 uppercase">
-            <SiteNavLinks variant="nav" onGoPortal={goPortal} portalActive={activeDivision === 'parent'} />
-            <span className="w-px h-4 bg-white/15" aria-hidden />
+            <SiteNavLinks variant="nav" />
             <button
               id="nav-link-journeys"
               type="button"
@@ -147,24 +146,44 @@ export const Navigation: React.FC<NavigationProps> = ({
       </header>
 
       <MobileNavMenu open={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} hideFrom="md:hidden">
+        {SIBLING_NAV.map((link) => (
+          <MobileNavItem key={link.id}>
+            <a
+              id={link.id}
+              href={link.href}
+              onClick={() => setMobileMenuOpen(false)}
+              className="block w-full text-left hover:text-[#C5A880] text-xl tracking-[0.22em] uppercase text-slate-200"
+            >
+              {link.label}
+            </a>
+          </MobileNavItem>
+        ))}
         <MobileNavItem>
-          <button type="button" onClick={scrollToJourneys} className="block w-full text-left hover:text-[#C5A880] text-xl font-serif-luxury tracking-normal normal-case text-slate-200">
+          <button
+            type="button"
+            onClick={scrollToJourneys}
+            className="block w-full text-left hover:text-[#C5A880] text-xl tracking-[0.22em] uppercase text-slate-200"
+          >
             Journeys
           </button>
         </MobileNavItem>
         <MobileNavItem>
-          <button type="button" onClick={goAbout} className="block w-full text-left hover:text-[#C5A880] text-xl font-serif-luxury tracking-normal normal-case text-slate-200">
+          <button
+            type="button"
+            onClick={goAbout}
+            className="block w-full text-left hover:text-[#C5A880] text-xl tracking-[0.22em] uppercase text-slate-200"
+          >
             About
           </button>
         </MobileNavItem>
         <MobileNavItem>
-          <button type="button" onClick={openContact} className="block w-full text-left hover:text-[#C5A880] text-xl font-serif-luxury tracking-normal normal-case text-slate-200">
+          <button
+            type="button"
+            onClick={openContact}
+            className="block w-full text-left hover:text-[#C5A880] text-xl tracking-[0.22em] uppercase text-slate-200"
+          >
             Contact
           </button>
-        </MobileNavItem>
-        <MobileNavItem className="pt-4 border-t border-white/10 space-y-4 text-sm tracking-[0.2em] uppercase">
-          <span className="text-[10px] text-[#C5A880] tracking-[0.28em] block mb-2 normal-case">Our websites</span>
-          <SiteNavLinks variant="mobile" onGoPortal={goPortal} portalActive={activeDivision === 'parent'} />
         </MobileNavItem>
         <MobileNavItem>
           <button

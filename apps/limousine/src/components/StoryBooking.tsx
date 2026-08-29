@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { GROUND_FLEET, ICELAND_TOURS, AIRPORT_TRANSFER, formatMoney } from '../data/fleet';
 import { addBooking, type ServiceType } from '../lib/bookings';
+import { notifyBookingByEmail } from '../lib/notifyBooking';
 import { easeLuxury, bookingPortal, pageSlide, stepStagger, stepChild } from '../lib/motion';
 
 type Step = 'welcome' | 'vehicle' | 'service' | 'calendar' | 'details' | 'confirm';
@@ -113,7 +114,7 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
     return true;
   };
 
-  const submit = () => {
+  const submit = async () => {
     if (submitting) return;
     setSubmitting(true);
     setSubmitError('');
@@ -143,6 +144,9 @@ export const StoryBooking: React.FC<StoryBookingProps> = ({
       setSubmitting(false);
       return;
     }
+
+    // Email is best-effort — local booking always wins if Resend is offline/misconfigured
+    await notifyBookingByEmail(result.booking);
 
     setRefId(result.booking.id);
     setDirection(1);

@@ -3,42 +3,29 @@ import { SITES } from '../config/sites';
 
 type Variant = 'nav' | 'mobile';
 
+export const SIBLING_NAV = [
+  { id: 'nav-link-aviation', href: SITES.jets, label: 'Aviation' },
+  { id: 'nav-link-iceland', href: SITES.limousine, label: 'Iceland' },
+] as const;
+
 interface SiteNavLinksProps {
   variant: Variant;
-  onGoPortal: () => void;
-  portalActive?: boolean;
 }
 
-const navClass =
-  'hover:text-[#C5A880] transition-colors cursor-pointer';
+const navClass = 'hover:text-[#C5A880] transition-colors cursor-pointer';
 const mobileClass =
-  'block w-full text-left hover:text-[#C5A880] text-lg font-serif-luxury tracking-normal normal-case';
-const activeNavClass = 'text-[#C5A880]';
-const activeMobileClass = 'text-[#C5A880]';
+  'block w-full text-left hover:text-[#C5A880] text-xl tracking-[0.22em] uppercase text-slate-200';
 
-export const SiteNavLinks: React.FC<SiteNavLinksProps> = ({
-  variant,
-  onGoPortal,
-  portalActive = false,
-}) => {
+export const SiteNavLinks: React.FC<SiteNavLinksProps> = ({ variant }) => {
   const cls = variant === 'nav' ? navClass : mobileClass;
 
   return (
     <>
-      <button
-        type="button"
-        onClick={onGoPortal}
-        className={`${cls} ${portalActive ? (variant === 'nav' ? activeNavClass : activeMobileClass) : ''}`}
-      >
-        Portal
-      </button>
-      <a href={SITES.jets} className={cls}>
-        Jets
-      </a>
-      <a href={SITES.limousine} className={cls}>
-        Iceland
-      </a>
+      {SIBLING_NAV.map((link) => (
+        <a key={link.id} id={link.id} href={link.href} className={cls}>
+          {link.label}
+        </a>
+      ))}
     </>
   );
 };
-
